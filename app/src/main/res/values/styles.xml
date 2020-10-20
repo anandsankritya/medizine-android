@@ -1,10 +1,115 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- action bar color -->
+        <item name="colorPrimary">@color/white</item>
+
+        <!-- status bar -->
+        <item name="android:statusBarColor">@color/primary</item>
+
+        <!-- text and icons on action bar -->
+        <item name="colorControlNormal">@color/primary</item>
+        <item name="android:textColorPrimary">@color/primary</item>
+
+        <!-- Background color for options menu -->
+        <item name="android:itemBackground">@color/white</item>
+
+        <!-- FAB -->
+        <item name="colorAccent">@color/primary</item>
+
+        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+
+    </style>
+
+    <style name="AppTheme.NoTitleBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="FirebaseLoginUI" parent="AppThemeNoActionBar">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="HomeActivityTheme" parent="AppTheme.NoTitleBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="AppThemeDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/secondary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondary</item>
+    </style>
+
+    <style name="ReviewPopupDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/onSurfaceText</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondary</item>
+    </style>
+
+    <style name="DeleteTempleDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/onSurfaceTitle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="DeleteDharmashalaDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/onSurfaceTitle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/onSurfaceSubtitle</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+    </style>
+
+    <!--Select Language Buttons Style-->
+    <style name="lang_btn_style">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="background">@drawable/rbtn_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:checked">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/rbtn_textcolor_selector</item>
+    </style>
+
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/grey800</item>
+        <item name="colorControlActivated">@color/secondary</item>
+    </style>
+
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">5.0dp</item>
+        <!--<item name="android:popupBackground">#FFF</item>-->
+    </style>
+
+    <style name="checkBox">
+        <item name="android:buttonTint">@color/checkbox_selector</item>
+        <item name="android:textColor">@color/checkbox_text_selector</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="124"
+    android:viewportHeight="124">
+
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M0,62 a62,62 0,1,1 62,62 a62,62 0,1,1 62,-62" />
+
+    <group android:translateX="2"
+        android:translateY="2">
+        <path
+            android:fillColor="@color/grey200"
+            android:pathData="M0,60 a60,60 0,1,1 60,60 a60,60 0,1,1 60,-60" />
+        <group android:translateY="10"
+            android:translateX="10">
+            <path
+                android:fillColor="@color/onSurfaceMetadata"
+                android:fillType="evenOdd"
+                android:pathData="M92.3045,88.3215 C89.0334,90.4286,78.6704,94.9978,50.3156,95
+                    C21.9607,95.0018,11.5974,90.4338,8.32589,88.3274
+                    C7.43643,87.7547,6.93609,86.7379,7.00657,85.6825
+                    C7.21434,82.5721,8.68234,75.7534,17.2836,72.6523
+                    C24.5337,70.0382,32.805,68.8771,38.1748,65.8978
+                    C41.1258,64.2602,41.4786,60.1613,38.8873,57.9987
+                    C34.4859,54.326,32.04,48.5179,30.7162,42.5941
+                    C28.506,41.5846,22.2827,29.4695,28.3177,28.2761
+                    C28.6381,28.213,28.956,28.2009,29.2651,28.2306
+                    C29.2739,14.5983,38.692,5.00073,50.3093,5
+                    C61.9277,4.99927,71.3477,14.3524,71.3572,28.2306
+                    C71.507,28.2361,71.6579,28.2479,71.8095,28.2732
+                    C78.4123,29.38,72.6975,39.8997,69.9887,42.2153
+                    C68.6863,48.2686,66.233,54.2463,61.7391,57.9973
+                    C59.1478,60.1602,59.5009,64.2587,62.4527,65.8959
+                    C67.8229,68.8749,76.0941,70.0345,83.3446,72.6475
+                    C91.9462,75.7476,93.4153,82.5663,93.6235,85.6766
+                    C93.6939,86.732,93.194,87.7489,92.3045,88.3215"
+                android:strokeWidth="1"
+                tools:ignore="UnusedAttribute" />
+        </group>
+    </group>
+
+</vector>

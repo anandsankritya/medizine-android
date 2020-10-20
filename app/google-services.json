@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "626621710019",
+    "firebase_url": "https://medizine-b590a.firebaseio.com",
+    "project_id": "medizine-b590a",
+    "storage_bucket": "medizine-b590a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626621710019:android:462fd60af022d43525ec76",
+        "android_client_info": {
+          "package_name": "com.medizine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626621710019-glhoa5rvpg38bls6dve2ov86q9sg57fc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1lQeByFTXcz-aEAk2WGb4zEyeVI2VDfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626621710019-glhoa5rvpg38bls6dve2ov86q9sg57fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
