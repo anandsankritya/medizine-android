@@ -1,18 +1,43 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        buildNumber = "0"
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+// Create the different parts of the version code
+def calendar = Calendar.getInstance()
+def year = calendar.get(Calendar.YEAR)
+def month = calendar.get(Calendar.MONTH)
+def day = calendar.get(Calendar.DAY_OF_MONTH)
+def buildVersionCode = Integer.valueOf(property('buildNumber'))
+def buildNumber = buildVersionCode % 10
 
+// Generate the version code
+def generatedVersionCode = year * 1000000 + (month + 1) * 10000 + day * 100 + buildNumber * 10
+
+android {
+    lintOptions {
+        checkReleaseBuilds false
+    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.medizine"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode generatedVersionCode.toInteger()
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+    dexOptions {
+        jumboMode true
     }
 
     buildTypes {
@@ -22,6 +47,18 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/bumptech.glide'
+        exclude 'lib/*/libRSSupport.so'
+        exclude 'lib/*/librsjni.so'
+        exclude 'lib/*/librsjni_androidx.so'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -29,17 +66,95 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0')
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2' // Beware: Do not update to 1.1.0 as it breaks language change feature
+    implementation 'androidx.fragment:fragment:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.core:core:1.1.0'
+    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "androidx.room:room-runtime:2.2.3"
+
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.room:room-rxjava2:2.2.3'
+
+    //Firebase
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
-    implementation 'com.jakewharton:butterknife:10.2.3'
+    implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.google.firebase:firebase-invites:17.0.0'
+    implementation 'com.google.firebase:firebase-config:18.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation 'com.google.android.gms:play-services-base:17.1.0'
+    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.3.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.google.dagger:dagger:2.25.2'
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.otaliastudios:zoomlayout:1.7.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:r2.5.2'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:r2.5.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+    implementation 'br.com.simplepass:loading-button-android:1.14.0'
+
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    //implementation project(':rxpermissions')
+
+    implementation group: 'com.github.davidmoten', name: 'geo', version: '0.7.6'
+
+    implementation 'com.ms-square:expandableTextView:0.1.4'
+
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.18'
+
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'
+
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.11.0") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
+    implementation 'com.github.tank777.expandable-recycler-view:expandablerecyclerview:1.6@aar'
+
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    // debugImplementation because LeakCanary should only run in debug builds.
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+
+    implementation 'com.asksira.android:loopingviewpager:1.1.4'
+    implementation 'com.squareup:seismic:1.0.2'
 
     testImplementation 'junit:junit:4.12'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.25.2'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    annotationProcessor "androidx.room:room-compiler:2.2.3"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    //implementation project(path: ':commonlib')
+    //implementation project(path: ':mobilertc')
 }

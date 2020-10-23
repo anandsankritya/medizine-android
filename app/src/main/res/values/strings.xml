@@ -1,3 +1,94 @@
 <resources>
     <string name="app_name">Medizine</string>
+    <string name="im_a_doctor">I\'m a Doctor</string>
+    <string name="im_a_visitor">I\'m a Visitor</string>
+    <string name="normal">User</string>
+    <string name="doctor">Doctor</string>
+    <string name="settings">Settings</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="share_app">Share</string>
+
+    <!-- Contact Us String -->
+    <string name="title_contact_us">Contact Us</string>
+    <string name="request_title">Request</string>
+    <string name="request_button">Send</string>
+    <string name="request_sent">Request Sent!</string>
+    <string name="request_not_sent">Unable to send the request!</string>
+    <string name="contact_us_call_message">In case you have any other query,\n you may call us</string>
+    <string name="call_button">Call</string>
+    <string name="feedback_sent">Thanks for your valuable Feedback!</string>
+    <string name="feedback_not_sent">Unable to send the Feedback!</string>
+    <string name="contact_hint">Enter request here</string>
+
+    <string name="welcome_to_medizine">Welcome to Medizine</string>
+    <string name="please_enter_request">Please enter a valid request</string>
+
+    <string name="duration_separator">:</string>
+    <string name="by">by</string>
+    <string name="successful_update">Successfully Updated</string>
+    <string name="successful_upload">Successfully Uploaded</string>
+    <string name="successful_edit">Successfully Edited</string>
+    <string name="successful_delete">Successfully Deleted</string>
+
+    <string name="download_only_on_wifi">Download Only on Wifi</string>
+    <string name="resend_otp"><u>Resend OTP</u></string>
+    <string name="submit">Submit</string>
+    <string name="next">Next</string>
+    <string name="never">Never</string>
+    <string name="not_now">Not Now</string>
+    <string name="rating_dialog_form_title">Tell us where we can improve</string>
+    <string name="rating_dialog_positvie">Rate on Playstore</string>
+    <string name="rating_dialog_negative">Maybe Later</string>
+    <string name="rating_dialog_title">How was your experience with us?</string>
+    <string name="rating_dialog_form_hint">Suggest us what went wrong and we\'ll work on it!</string>
+    <string name="name_field_blank_in_login">Enter full name</string>
+    <string name="mobile_field_blank_in_login">Enter mobile number</string>
+    <string name="referral_field_blank_in_login">Enter referral code</string>
+    <string name="terms_and_conditions">By logging in you agree to Medizine\'s &lt;a href=%s>terms &amp; conditions&lt;/a> and &lt;a href=%s>privacy policy&lt;/a>.</string>
+    <string name="wrong_otp_error">Wrong OTP</string>
+    <string name="internet_unavailable">Internet Unavailable</string>
+    <string name="oops_something_went_wrong">Oops! Something went wrong. Try again later.</string>
+    <string name="otp_sent_again">OTP sent again</string>
+    <string name="otp_sent">OTP sent</string>
+    <string name="verifying_otp">Verifying ...</string>
+    <string name="otp_verified">OTP Verified!</string>
+    <string name="verify">Verify</string>
+    <string name="error_valid_name">Enter valid name</string>
+    <string name="error_valid_bio">Enter valid bio</string>
+    <string name="error_valid_dob">Enter valid Date of Birth</string>
+    <string name="error_verify_number">Verify phone number</string>
+    <string name="error_select_gender">Select gender</string>
+    <string name="enter_country_code">Please enter a valid country code</string>
+    <string name="invalid_mobile_number">Enter a valid mobile number</string>
+    <string name="generic_permission_message">Kindly give permission to go ahead</string>
+    <string name="alternative_number_same">Alternate number same as phone number</string>
+    <string name="unresolved_location_requirements">Unable to resolve GPS requirements.</string>
+    <string name="location_timeout_error_message">Unable to fetch location, please try again</string>
+    <string name="location_no_provider_error_message">Unable to fetch location, please check network and location availability</string>
+
+    <!--First time tutorial-->
+    <string name="dismiss_text">GOT IT</string>
+    <string name="search_description">Search here by entering name or place</string>
+    <string name="edit_description">Click here to add additional details</string>
+
+    <!-- update dialog specific strings -->
+    <string name="text_update_title">New Version Available</string>
+    <string name="text_force_update_positive_button">Update Now</string>
+    <string name="text_normal_update_positive_button">Update</string>
+    <string name="text_normal_update_negative_button">Cancel</string>
+    <string name="done_button">Done</string>
+
+    <!--StateLayoutStrings-->
+    <string name="text_error">Failed to load data, Please try again!</string>
+    <string name="text_empty">No data available to show.</string>
+    <string name="text_refresh">Retry</string>
+    <!--End-->
+
+    <!-- storage permission specific strings -->
+    <string name="dialog_ask_permission_title">Storage permission is required</string>
+
+    <string name="drawer_open">Opening drawer</string>
+    <string name="drawer_closed">Closing drawer</string>
+    <string name="saving">Saving…</string>
+
 </resources>
