@@ -42,6 +42,7 @@ public class Constants {
     public static final String IS_ADMIN = "is_admin";
     public static final String DELETED = "deleted";
     public static final String LOAD_CURRENT_USER = "loadCurrentUser";
+    public static final String PROFILE_VISIBLE_TO_PAGE_ADMIN = "profileVisibleToPageAdmin";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String ADDRESS = "address";
@@ -192,5 +193,7 @@ public class Constants {
 
     public static final String TELEGRAM_LINK_PREFIX = "https://t.me/";
     public static final String WHATS_APP_LINK_PREFIX = "https://wa.me/";
+
+    public static final String COUNTRY_CODE_IN = "+91";
 
 }

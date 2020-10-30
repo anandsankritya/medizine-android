@@ -1,26 +1,44 @@
 package com.medizine.activity;
 
-import androidx.annotation.NonNull;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseUser;
-import com.medizine.Constants;
 import com.medizine.R;
-import com.medizine.db.PrefService;
-import com.medizine.model.enums.UserType;
+import com.medizine.exceptions.NetworkUnavailableException;
+import com.medizine.network.NetworkService;
+import com.medizine.network.RetryOperator;
+import com.medizine.network.RxNetwork;
 import com.medizine.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
-public class HomeActivity extends BaseActivity {
+import static com.medizine.Constants.COUNTRY_CODE_IN;
 
-    @BindView(R.id.tvUserInfo)
-    TextView tvUserInfo;
+public class HomeActivity extends NavigationActivity {
+
+    private static final String TAG = HomeActivity.class.getSimpleName();
+
+    @BindView(R.id.appBar)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @NonNull
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static void launchHomeActivity(@NonNull Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -28,29 +46,117 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
-        if (Utils.isUserTypeNormal()) {
-            validateUserProfile();
-        } else if (Utils.isUserTypeDoctor()) {
-            validateDoctorProfile();
+        String phoneNumber = null;
+
+        FirebaseUser user = getCurrentFirebaseUser();
+        if (user != null && user.getPhoneNumber() != null && user.getPhoneNumber().startsWith(COUNTRY_CODE_IN)) {
+            phoneNumber = user.getPhoneNumber().replace(COUNTRY_CODE_IN, "");
+        }
+
+        if (Utils.isNotEmpty(phoneNumber)) {
+            if (Utils.isUserTypeNormal()) {
+                validateUserProfile(phoneNumber);
+            } else if (Utils.isUserTypeDoctor()) {
+                validateDoctorProfile(phoneNumber);
+            }
         } else {
             Utils.logOutUser();
         }
     }
 
-    private void validateDoctorProfile() {
-        //1. Check is a doctor already exists with {countryCode} and {phone} via network call
+    private void validateUserProfile(String phoneNumber) {
+        //1. Check if a user already exists with {countryCode} and {phone} via network call
         //2. If doctor already exists fetch doctor profile via network call and render UI accordingly
         //3. If doctor not exists create a doctor using same {countryCode} and {phone} via network call
+
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getUserByPhoneNumber(phoneNumber);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                showToast("User already exists.");
+                            } else {
+                                showToast("User does not exists.");
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
-    private void validateUserProfile() {
+    private void validateDoctorProfile(String phoneNumber) {
         //1. Check is a doctor already exists with {countryCode} and {phone} via network call
         //2. If doctor already exists fetch doctor profile via network call and render UI accordingly
         //3. If doctor not exists create a doctor using same {countryCode} and {phone} via network call
+
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getDoctorByPhoneNumber(phoneNumber);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                showToast("User already exists.");
+                            } else {
+                                showToast("User does not exists.");
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.clear();
+        super.onDestroy();
     }
 }

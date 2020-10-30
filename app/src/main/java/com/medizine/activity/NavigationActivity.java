@@ -1,15 +1,6 @@
 package com.medizine.activity;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,11 +12,19 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
+
 import com.medizine.R;
 import com.medizine.adapter.DrawerMenuListAdapter;
 import com.medizine.db.StorageService;
 import com.medizine.model.entity.User;
 import com.medizine.model.enums.DrawerMenuItem;
+import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
 import com.medizine.widgets.DrawerLocker;
 
@@ -64,7 +63,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         userLiveData.observe(this, user -> {
             if (user != null) {
                 usernameTv.setText(user.getName());
-                ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, user.getProfilePicAsString(), profilePic, R.drawable.profile_pic_white_border_circle,
+                ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, "", profilePic, R.drawable.profile_pic_white_border_circle,
                         Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
             }
         });

@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 
-import com.jainam.android.R;
-import com.jainam.android.utils.Utils;
+import com.medizine.R;
+import com.medizine.utils.Utils;
 
 public class SectionWidget extends LinearLayout {
     LinearLayout mContentLayout;

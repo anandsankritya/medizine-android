@@ -46,8 +46,6 @@ import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
@@ -106,19 +104,6 @@ import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 public class Utils {
     private static final int UNCHECKED_ERROR_TYPE_CODE = -100;
     private static final String TAG = Utils.class.getSimpleName();
-
-    public static boolean isSubscriptionExpired() {
-        User user = Utils.getUser();
-        if (user != null && user.getSubscriptionEndDate() != null) {
-            return System.currentTimeMillis() > user.getSubscriptionEndDate().getTime();
-        } else {
-            return true;
-        }
-    }
-
-    public static boolean hasSubscription() {
-        return !Utils.isSubscriptionExpired();
-    }
 
     public static int dpToPixels(float dpValue) {
         DisplayMetrics metrics = MedizineApp.getAppContext().getResources().getDisplayMetrics();
@@ -475,36 +460,36 @@ public class Utils {
         return false;
     }
 
-    public static void setUserFieldsToCrashlytics() {
-        User user = getUser();
-        try {
-            Crashlytics.setUserIdentifier(user.getMobile());
-            Crashlytics.setUserEmail(user.getId());
-            Crashlytics.setUserName(user.getName());
-        } catch (NullPointerException e) {
-            logOutUser();
-        }
-    }
-
-    public static void setPrivateKeyToCrashlytics(String apiKey) {
-        Crashlytics.setString("apiKey", apiKey);
-    }
-
-    public static void setUserIdToCrashlytics(String userId) {
-        Crashlytics.setString("userId", userId);
-    }
-
-    public static void logActivityStatusToCrashlytics(String tag, String lifecycleEvent) {
-        Crashlytics.log(Log.INFO, "Activity: " + tag, lifecycleEvent);
-    }
-
-    public static void logFragmentStatusToCrashlytics(String tag, String lifecycleEvent) {
-        Crashlytics.log(Log.INFO, "Fragment: " + tag, lifecycleEvent);
-    }
-
-    public static void logLocationStatus(String message) {
-        Crashlytics.log(Log.INFO, "Location", message);
-    }
+//    public static void setUserFieldsToCrashlytics() {
+//        User user = getUser();
+//        try {
+//            Crashlytics.setUserIdentifier(user.getMobile());
+//            Crashlytics.setUserEmail(user.getId());
+//            Crashlytics.setUserName(user.getName());
+//        } catch (NullPointerException e) {
+//            logOutUser();
+//        }
+//    }
+//
+//    public static void setPrivateKeyToCrashlytics(String apiKey) {
+//        Crashlytics.setString("apiKey", apiKey);
+//    }
+//
+//    public static void setUserIdToCrashlytics(String userId) {
+//        Crashlytics.setString("userId", userId);
+//    }
+//
+//    public static void logActivityStatusToCrashlytics(String tag, String lifecycleEvent) {
+//        Crashlytics.log(Log.INFO, "Activity: " + tag, lifecycleEvent);
+//    }
+//
+//    public static void logFragmentStatusToCrashlytics(String tag, String lifecycleEvent) {
+//        Crashlytics.log(Log.INFO, "Fragment: " + tag, lifecycleEvent);
+//    }
+//
+//    public static void logLocationStatus(String message) {
+//        Crashlytics.log(Log.INFO, "Location", message);
+//    }
 
     public static void reinitializeNetworkModule() {
         NetworkService.destroyInstance();
@@ -520,8 +505,6 @@ public class Utils {
             StorageService.getInstance().clearCache();
             PrefService.getInstance().deleteAll();
             reinitializeNetworkModule();
-            Utils.setUserIdToCrashlytics(null);
-            Utils.setPrivateKeyToCrashlytics(null);
             return null;
         };
         Future<Void> future = Executors.newSingleThreadExecutor().submit(callable);
@@ -566,13 +549,11 @@ public class Utils {
     public static void logException(String tag, @NonNull Throwable e) {
         Log.e(tag, e.getMessage(), e);
         Utils.writeToLogFile(tag + " : " + e.toString());
-        Crashlytics.logException(e);
     }
 
     public static void logException(String tag, String message, @NonNull Throwable e) {
         Log.e(tag, message, e);
         Utils.writeToLogFile(tag + " : " + message + " : " + e.toString());
-        Crashlytics.logException(e);
     }
 
     public static Bitmap getBitmapFromVectorDrawable(@NonNull Context context, int drawableId) {

@@ -1,609 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jainam.android.widgets.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical"
-    app:isConnectivityAware="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="102dp"
+            android:layout_height="102dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_pic_white_border_circle"/>
+
+        <com.medizine.widgets.SectionWidget
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:titleText="Personal">
 
-            <ImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="102dp"
-                android:layout_height="102dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/profile_pic_white_border_circle"/>
-
-            <com.jainam.android.widgets.SectionWidget
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:titleText="@string/personal">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/name"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="harshit jain" />
-
-                    <TextView
-                        android:id="@+id/tvLabelBio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/bio"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/name" />
-
-                    <TextView
-                        android:id="@+id/tvBio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/name"
-                        tools:text="Bio" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/gender"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvBio" />
-
-                    <TextView
-                        android:id="@+id/gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvBio"
-                        tools:text="Male" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/date_of_birth"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/gender" />
-
-                    <TextView
-                        android:id="@+id/dateOfBirth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/gender"
-                        tools:text="09/11/1989" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/phone_number"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
-
-                    <TextView
-                        android:id="@+id/phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/alternate_number"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/phone" />
-
-                    <TextView
-                        android:id="@+id/altMobile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/phone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/email"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/altMobile" />
-
-                    <TextView
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/altMobile"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:text="abc@xyz.com" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/whatsapp_number"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/email" />
-
-                    <TextView
-                        android:id="@+id/whatsapp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        android:autoLink="web"
-                        android:linksClickable="true"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/email"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/telegram"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/whatsapp" />
-
-                    <TextView
-                        android:id="@+id/telegram"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        android:autoLink="web"
-                        android:linksClickable="true"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/whatsapp"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.jainam.android.widgets.SectionWidget>
-
-            <com.jainam.android.widgets.SectionWidget
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:titleText="@string/religious_belief">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/sect"
-                        android:textColor="@color/onSurfaceTitle"
-                        android:textSize="14sp"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/sect"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/sect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Digambar" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/panth"
-                        android:textColor="@color/onSurfaceTitle"
-                        android:textSize="14sp"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/panth"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/sect" />
-
-                    <TextView
-                        android:id="@+id/panth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/sect"
-                        tools:text="terapanthi" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.jainam.android.widgets.SectionWidget>
-
-            <com.jainam.android.widgets.LocationWidget
-                android:id="@+id/locationWidget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-
-            <com.jainam.android.widgets.EducationWidget
-                android:id="@+id/educationWidget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-
-            <com.jainam.android.widgets.SectionWidget
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:id="@+id/identityProofWidget"
-                android:gravity="center_horizontal"
-                app:titleText="@string/id_proof">
-
-                <FrameLayout
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="@color/onSurfaceTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/idProof"
-                        android:layout_width="150dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:id="@+id/emptyIdProof"
-                        android:layout_width="150dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:background="@color/grey200"
-                        android:gravity="center"
-                        android:text="@string/no_id_proof" />
-
-                    <ImageView
-                        android:id="@+id/verifiedIdProof"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="end"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_verified_user"
-                        android:tint="@color/secondary"
-                        android:visibility="gone" />
-                </FrameLayout>
-            </com.jainam.android.widgets.SectionWidget>
-
-            <com.jainam.android.widgets.SectionWidget
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:id="@+id/familyWidget"
-                app:titleText="@string/family">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_110sdp"
+                    android:textColor="@color/onSurfaceText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/father_s_name"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/fatherName"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Gender"
+                    android:textColor="@color/onSurfaceTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
 
-                    <TextView
-                        android:id="@+id/fatherName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="father name" />
+                <TextView
+                    android:id="@+id/gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_110sdp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/onSurfaceText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name"
+                    tools:text="Male" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/father_s_occupation"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/fatherOccupation"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fatherName" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="D.O.B"
+                    android:textColor="@color/onSurfaceTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gender" />
 
-                    <TextView
-                        android:id="@+id/fatherOccupation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fatherName"
-                        tools:text="father Occupation" />
+                <TextView
+                    android:id="@+id/dateOfBirth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_110sdp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/onSurfaceText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gender"
+                    tools:text="09/11/1989" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/mother_s_name"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/motherName"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fatherOccupation" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Phone"
+                    android:textColor="@color/onSurfaceTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
 
-                    <TextView
-                        android:id="@+id/motherName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fatherOccupation"
-                        tools:text="Mother name" />
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_110sdp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/onSurfaceText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/mother_s_occupation"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/motherOccupation"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/motherName" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Email"
+                    android:textColor="@color/onSurfaceTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phone" />
 
-                    <TextView
-                        android:id="@+id/motherOccupation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/motherName"
-                        tools:text="Mother Occupation" />
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_110sdp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/onSurfaceText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="abc@xyz.com" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/family_type"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/familyType"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/motherOccupation" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/familyType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/motherOccupation"
-                        tools:text="Joint" />
+        </com.medizine.widgets.SectionWidget>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/family_income"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/familyIncome"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/familyType" />
+        <com.medizine.widgets.SectionWidget
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:id="@+id/identityProofWidget"
+            android:gravity="center_horizontal"
+            app:titleText="Id Proof">
 
-                    <TextView
-                        android:id="@+id/familyIncome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/familyType"
-                        tools:text="100000" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/brothers_count"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/numberOfBrothers"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/familyIncome" />
+                <ImageView
+                    android:id="@+id/idProof"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center" />
 
-                    <TextView
-                        android:id="@+id/numberOfBrothers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/familyIncome"
-                        tools:text="1" />
+                <TextView
+                    android:id="@+id/emptyIdProof"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@color/grey200"
+                    android:gravity="center"
+                    android:text="Id Proof" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/sisters_count"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/noOfSisters"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/numberOfBrothers" />
+                <ImageView
+                    android:id="@+id/verifiedIdProof"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="4dp"
+                    android:src="@drawable/ic_verified_user"
+                    android:tint="@color/secondary"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </com.medizine.widgets.SectionWidget>
 
-                    <TextView
-                        android:id="@+id/noOfSisters"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/numberOfBrothers"
-                        tools:text="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/self_gotra"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/selfGotra"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/noOfSisters" />
-
-                    <TextView
-                        android:id="@+id/selfGotra"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/noOfSisters"
-                        tools:text="Gotra" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/mother_s_gotra"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/mothersGotra"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/selfGotra" />
-
-                    <TextView
-                        android:id="@+id/mothersGotra"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/selfGotra"
-                        tools:text="Gotra" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/dadi_s_gotra"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/dadijisGotra"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mothersGotra" />
-
-                    <TextView
-                        android:id="@+id/dadijisGotra"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mothersGotra"
-                        tools:text="Gotra" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/nani_s_gotra"
-                        android:textColor="@color/onSurfaceTitle"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/nanijisGotra"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dadijisGotra" />
-
-                    <TextView
-                        android:id="@+id/nanijisGotra"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_110sdp"
-                        android:layout_marginTop="12dp"
-                        android:textColor="@color/onSurfaceText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dadijisGotra"
-                        tools:text="Gotra" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.jainam.android.widgets.SectionWidget>
-
-        </LinearLayout>
-    </ScrollView>
-</com.jainam.android.widgets.StateLayout>
+    </LinearLayout>
+</ScrollView>

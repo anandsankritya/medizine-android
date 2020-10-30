@@ -47,7 +47,6 @@ public enum StorageService {
                     .get()
                     .subscribeOn(Schedulers.io())
                     .blockingGet();
-            Utils.setUserIdToCrashlytics(mUser == null ? null : mUser.getId());
         }
         return mUser;
     }
@@ -56,14 +55,12 @@ public enum StorageService {
         if (user != null) {
             mUser = user;
             getMedizineDatabase().userDao().insertOrUpdate(user).subscribeOn(Schedulers.io()).blockingAwait();
-            Utils.setUserIdToCrashlytics(user.getId());
         }
     }
 
     public String getPrivateKey() {
         if (privateKey == null) {
             privateKey = PrefService.getInstance().getString(AUTH_PRIVATE_KEY, "");
-            Utils.setPrivateKeyToCrashlytics(privateKey);
         }
         return privateKey;
     }
@@ -71,7 +68,6 @@ public enum StorageService {
     public void storePrivateKey(String key) {
         PrefService.getInstance().saveData(AUTH_PRIVATE_KEY, key);
         privateKey = key;
-        Utils.setPrivateKeyToCrashlytics(key);
     }
 
 }

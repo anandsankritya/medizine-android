@@ -13,9 +13,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import com.jainam.android.R;
-import com.jainam.android.utils.ImageUtils;
-import com.jainam.android.utils.Utils;
+import com.medizine.R;
+import com.medizine.utils.ImageUtils;
+import com.medizine.utils.Utils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;

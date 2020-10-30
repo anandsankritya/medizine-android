@@ -67,8 +67,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0')
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'androidx.appcompat:appcompat:1.0.2' // Beware: Do not update to 1.1.0 as it breaks language change feature
     implementation 'androidx.fragment:fragment:1.1.0'
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -83,6 +81,11 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.room:room-rxjava2:2.2.3'
+
+    //Libs
+    implementation project(':commonlib')
+    implementation project(':mobilertc')
+    implementation project(':rxpermissions')
 
     //Firebase
     implementation 'com.google.firebase:firebase-auth:19.3.1'
@@ -122,7 +125,6 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
-    //implementation project(':rxpermissions')
 
     implementation group: 'com.github.davidmoten', name: 'geo', version: '0.7.6'
 
@@ -141,8 +143,6 @@ dependencies {
 
     implementation 'com.github.tank777.expandable-recycler-view:expandablerecyclerview:1.6@aar'
 
-    implementation 'com.google.android:flexbox:2.0.1'
-
     // debugImplementation because LeakCanary should only run in debug builds.
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
@@ -154,7 +154,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     annotationProcessor "androidx.room:room-compiler:2.2.3"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
-    //implementation project(path: ':commonlib')
-    //implementation project(path: ':mobilertc')
 }

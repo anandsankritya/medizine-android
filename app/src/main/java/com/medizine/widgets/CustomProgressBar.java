@@ -15,9 +15,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.jainam.android.Constants;
-import com.jainam.android.R;
-import com.jainam.android.utils.Utils;
+import com.medizine.Constants;
+import com.medizine.R;
+import com.medizine.utils.Utils;
+
 
 /**
  * Created by ramraj on 02-06-2017.

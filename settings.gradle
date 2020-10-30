@@ -1,2 +1,8 @@
 include ':app'
+include ':commonlib'
+include ':mobilertc'
+include ':rxpermissions'
+project(':commonlib').projectDir = new File('libs/commonlib')
+project(':mobilertc').projectDir = new File('libs/mobilertc')
+project(':rxpermissions').projectDir = new File('libs/rxpermissions')
 rootProject.name = "Medizine"
