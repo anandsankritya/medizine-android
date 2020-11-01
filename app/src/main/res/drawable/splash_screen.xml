@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
-
-
-    <item android:drawable="@color/colorPrimary" />
-
+    <item android:drawable="@color/white" />
+    <!--TODO: Add drawable/logo with a high resolution logo, 320 x 320 and 32bit PNG-->
     <item
-        android:drawable="@mipmap/ic_launcher_foreground"
+        android:drawable="@drawable/logo"
         android:gravity="center" />
-
 </layer-list>

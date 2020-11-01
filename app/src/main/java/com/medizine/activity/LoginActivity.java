@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity {
                         .setAvailableProviders(Collections.singletonList(new AuthUI.IdpConfig.PhoneBuilder().build()))
                         .setTosAndPrivacyPolicyUrls("https://superapp.example.com/terms-of-service.html",
                                 "https://superapp.example.com/privacy-policy.html")
-                        .setTheme(R.style.FirebaseLoginUI)
+                        .setTheme(R.style.LoginTheme)
                         .build(),
                 RC_SIGN_IN);
     }

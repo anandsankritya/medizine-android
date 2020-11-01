@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,7 +56,7 @@ public class HomeActivity extends NavigationActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
+        setDrawerEnabled(true);
         phoneNumber = null;
         FirebaseUser user = getCurrentFirebaseUser();
         if (user != null && user.getPhoneNumber() != null && user.getPhoneNumber().startsWith(COUNTRY_CODE_IN)) {
@@ -198,6 +199,17 @@ public class HomeActivity extends NavigationActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Close drawer, if open
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
+        invalidateOptionsMenu();
     }
 
     @Override
