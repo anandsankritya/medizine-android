@@ -4,7 +4,10 @@ import com.medizine.Constants;
 import com.medizine.MedizineApp;
 import com.medizine.db.StorageService;
 import com.medizine.model.Response;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.User;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,6 +58,10 @@ public class NetworkService {
     //Doctor APIs
     public Single<Response<Object>> getDoctorByPhoneNumber(String phoneNumber) {
         return retrofitInterface.getDoctorByPhoneNumber(Constants.COUNTRY_CODE_IN, phoneNumber);
+    }
+
+    public Single<Response<List<Doctor>>> getAllDoctors() {
+        return retrofitInterface.getAllDoctors();
     }
 
 }

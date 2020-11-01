@@ -2,7 +2,10 @@ package com.medizine.network;
 
 
 import com.medizine.model.Response;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.User;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -36,4 +39,6 @@ public interface RetrofitInterface {
     Single<Response<Object>> getDoctorByPhoneNumber(@Query("countryCode") String countryCode,
                                                     @Query("phoneNumber") String phoneNumber);
 
+    @GET("/medizine/v1/doctor/getMany")
+    Single<Response<List<Doctor>>> getAllDoctors();
 }

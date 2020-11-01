@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -18,12 +19,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.medizine.R;
+import com.medizine.adapter.DoctorListAdapter;
 import com.medizine.adapter.DrawerMenuListAdapter;
 import com.medizine.db.StorageService;
+import com.medizine.exceptions.NetworkUnavailableException;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.User;
 import com.medizine.model.enums.DrawerMenuItem;
+import com.medizine.network.NetworkService;
+import com.medizine.network.RetryOperator;
+import com.medizine.network.RxNetwork;
 import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
 import com.medizine.widgets.DrawerLocker;
@@ -34,9 +43,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("Registered")
 public class NavigationActivity extends BaseActivity implements DrawerLocker {
+
+    public static final String TAG = NavigationActivity.class.getSimpleName();
 
     protected ActionBarDrawerToggle mDrawerToggle;
     @BindView(R.id.drawerLayout)
@@ -49,7 +63,10 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
     ImageView profilePic;
     @BindView(R.id.drawerRoot)
     ScrollView drawerRoot;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     private List<DrawerMenuItem> mMenuItems;
+    private DoctorListAdapter doctorListAdapter;
 
     protected void onCreateDrawer() {
         setupDrawer();
@@ -60,6 +77,8 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
                     usernameTv.setText(Utils.isNullOrEmpty(user.getName()) ? user.getCountryCode() + user.getPhoneNumber() : user.getName());
                     ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, "", profilePic, R.drawable.profile_pic_white_border_circle,
                             Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
+
+                    fetchAllDoctors();
                 }
             });
         } else if (Utils.isUserTypeDoctor()) {
@@ -67,6 +86,41 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         } else {
             Utils.logOutUser();
         }
+    }
+
+    private void fetchAllDoctors() {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getAllDoctors();
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            List<Doctor> doctors = new ArrayList<>();
+                            if (response.getData() != null) {
+                                doctors = response.getData();
+                            }
+                            doctorListAdapter.setList(doctors);
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
     private void setupDrawer() {
@@ -110,6 +164,10 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
         onCreateDrawer();
+        //Init Rv Doctor
+        doctorListAdapter = new DoctorListAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(doctorListAdapter);
     }
 
 
