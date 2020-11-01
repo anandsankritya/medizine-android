@@ -58,7 +58,6 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
 
     protected void onCreateDrawer() {
         setupDrawer();
-
         if (Utils.isUserTypeNormal()) {
             LiveData<User> userLiveData = StorageService.getInstance().getMedizineDatabase().userDao().getLiveData();
             userLiveData.observe(this, user -> {
@@ -68,8 +67,11 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
                             Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
                 }
             });
+        } else if (Utils.isUserTypeDoctor()) {
+            //TODO: Implement for doctor (Akash)
+        } else {
+            Utils.logOutUser();
         }
-
     }
 
     private void setupDrawer() {
@@ -126,7 +128,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
 
     @OnClick({R.id.profilePic, R.id.usernameTv})
     public void profileViewClicked() {
-        ProfileActivity.launchProfileActivity(NavigationActivity.this);
+        UserProfileActivity.launchProfileActivity(NavigationActivity.this);
         mDrawerLayout.closeDrawers();
     }
 

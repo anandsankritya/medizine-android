@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class User {
+public class Doctor {
     @PrimaryKey
     @NonNull
     private String id;
@@ -18,7 +18,7 @@ public class User {
     private String bloodGroup;
     private int weight;
 
-    public User() {
+    public Doctor() {
     }
 
     public String getId() {
@@ -93,4 +93,3 @@ public class User {
         this.weight = weight;
     }
 }
-

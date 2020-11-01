@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
 
 import static com.medizine.Constants.REQUEST_EDIT_PROFILE;
 
-public class ProfileActivity extends BaseActivity {
-    private static final String TAG = ProfileActivity.class.getSimpleName();
+public class UserProfileActivity extends BaseActivity {
+    private static final String TAG = UserProfileActivity.class.getSimpleName();
 
     @BindView(R.id.name)
     TextView name;
@@ -44,14 +44,14 @@ public class ProfileActivity extends BaseActivity {
 //    SectionWidget identityProofWidget;
 
     public static void launchProfileActivity(Context context) {
-        Intent intent = new Intent(context, ProfileActivity.class);
+        Intent intent = new Intent(context, UserProfileActivity.class);
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.profile));
@@ -67,7 +67,7 @@ public class ProfileActivity extends BaseActivity {
         name.setText(user.getName());
 
         phone.setText(user.getCountryCode() + " " + user.getPhoneNumber());
-        phone.setOnClickListener(v -> Utils.dialPhone(ProfileActivity.this, user.getCountryCode() + user.getPhoneNumber()));
+        phone.setOnClickListener(v -> Utils.dialPhone(UserProfileActivity.this, user.getCountryCode() + user.getPhoneNumber()));
 
         // Set DOB
         if (Utils.isNullOrEmpty(user.getDob())) {

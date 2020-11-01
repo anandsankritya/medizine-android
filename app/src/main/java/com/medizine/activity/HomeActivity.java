@@ -3,7 +3,6 @@ package com.medizine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,15 +11,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseUser;
-import com.medizine.Constants;
 import com.medizine.R;
 import com.medizine.db.StorageService;
 import com.medizine.exceptions.NetworkUnavailableException;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.User;
 import com.medizine.network.NetworkService;
 import com.medizine.network.RetryOperator;
 import com.medizine.network.RxNetwork;
-import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
 
 import butterknife.BindView;
@@ -174,9 +172,9 @@ public class HomeActivity extends NavigationActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                             if (response.getData() != null) {
-                                showToast("User already exists.");
+                                StorageService.getInstance().getMedizineDatabase().doctorDao().insertOrUpdate((Doctor) response.getData()).subscribeOn(Schedulers.io()).blockingAwait();
                             } else {
-                                showToast("User does not exists.");
+                                createDoctor(phoneNumber);
                             }
                             hideProgressBar();
                             setProgressDialogMessage(getString(R.string.saving));
@@ -190,6 +188,10 @@ public class HomeActivity extends NavigationActivity {
                             }
                         }
                 );
+    }
+
+    private void createDoctor(String phoneNumber) {
+        //TODO: Implement method like `createUser` (Akash)
     }
 
     @Override
