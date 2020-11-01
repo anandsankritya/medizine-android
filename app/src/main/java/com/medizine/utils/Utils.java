@@ -48,6 +48,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -513,6 +514,8 @@ public class Utils {
         } catch (ExecutionException | InterruptedException e) {
             Utils.logException(TAG, e);
         }
+
+        FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(context, SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
