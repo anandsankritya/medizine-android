@@ -25,8 +25,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_login);
         showOtpVerificationUI();
     }
 
@@ -58,14 +57,15 @@ public class LoginActivity extends BaseActivity {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    Toast.makeText(this, "Sign in cancelled!", Toast.LENGTH_SHORT).show();
+                    showToast(getString(R.string.sign_in_cancelled));
                 } else if (response.getError() != null && response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                    showToast(getString(R.string.internet_unavailable));
                 } else {
-                    Toast.makeText(this, "Unknown error, please try again later!", Toast.LENGTH_SHORT).show();
+                    showToast(getString(R.string.oops_something_went_wrong));
                     Log.d(TAG, "Sign-in error: ", response.getError());
                 }
             }
+            finish();
         }
     }
 }

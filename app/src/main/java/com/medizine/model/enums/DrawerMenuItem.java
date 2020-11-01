@@ -6,8 +6,8 @@ import com.medizine.R;
 
 public enum DrawerMenuItem {
     CONTACT_US(R.string.contact_us, R.drawable.ic_phone_grey),
-    SHARE_APP(R.string.share_app, R.drawable.ic_share_grey);
-
+    SHARE_APP(R.string.share_app, R.drawable.ic_share_grey),
+    LOG_OUT(R.string.log_out, R.drawable.ic_baseline_exit_to_app_24);
 
     private final int resourceId;
     private final int resDrawable;

@@ -1,38 +1,22 @@
 package com.medizine.activity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.medizine.R;
 import com.medizine.db.StorageService;
-import com.medizine.exceptions.NetworkUnavailableException;
 import com.medizine.model.entity.User;
-import com.medizine.network.NetworkService;
-import com.medizine.network.RetryOperator;
-import com.medizine.network.RxNetwork;
-import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
-import com.medizine.widgets.SectionWidget;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
-import static com.medizine.Constants.LOAD_CURRENT_USER;
-import static com.medizine.Constants.MODULE_ID;
-import static com.medizine.Constants.PROFILE_VISIBLE_TO_PAGE_ADMIN;
 import static com.medizine.Constants.REQUEST_EDIT_PROFILE;
 
 public class ProfileActivity extends BaseActivity {
@@ -48,36 +32,20 @@ public class ProfileActivity extends BaseActivity {
     TextView phone;
     @BindView(R.id.email)
     TextView email;
-    @BindView(R.id.idProof)
-    ImageView idProof;
-    @BindView(R.id.iv_profile)
-    ImageView profilePic;
-    @BindView(R.id.emptyIdProof)
-    TextView emptyIdProof;
-    @BindView(R.id.verifiedIdProof)
-    ImageView verifiedIdProof;
-    @BindView(R.id.identityProofWidget)
-    SectionWidget identityProofWidget;
+//    @BindView(R.id.idProof)
+//    ImageView idProof;
+//    @BindView(R.id.iv_profile)
+//    ImageView profilePic;
+//    @BindView(R.id.emptyIdProof)
+//    TextView emptyIdProof;
+//    @BindView(R.id.verifiedIdProof)
+//    ImageView verifiedIdProof;
+//    @BindView(R.id.identityProofWidget)
+//    SectionWidget identityProofWidget;
 
-    @Nullable
-    private String userId;
-    private boolean loadCurrentUser;
-    private boolean isProfileVisibleToPageAdmin = false;
-
-    public static void openProfileActivity(Context context, boolean loadCurrentUser, @Nullable String userId, boolean isProfileVisibleToPageAdmin) {
+    public static void launchProfileActivity(Context context) {
         Intent intent = new Intent(context, ProfileActivity.class);
-        intent.putExtra(MODULE_ID, userId);
-        intent.putExtra(LOAD_CURRENT_USER, loadCurrentUser);
-        intent.putExtra(PROFILE_VISIBLE_TO_PAGE_ADMIN, isProfileVisibleToPageAdmin);
         context.startActivity(intent);
-    }
-
-    @Override
-    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(MODULE_ID, userId);
-        outState.putBoolean(LOAD_CURRENT_USER, loadCurrentUser);
-        outState.putBoolean(PROFILE_VISIBLE_TO_PAGE_ADMIN, isProfileVisibleToPageAdmin);
     }
 
     @Override
@@ -86,78 +54,26 @@ public class ProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setTitle(getString(R.string.profile));
 
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(MODULE_ID);
-            loadCurrentUser = savedInstanceState.getBoolean(LOAD_CURRENT_USER);
-        } else {
-            loadCurrentUser = getIntent().getBooleanExtra(LOAD_CURRENT_USER, false);
-            userId = getIntent().getStringExtra(MODULE_ID);
-            isProfileVisibleToPageAdmin = getIntent().getBooleanExtra(PROFILE_VISIBLE_TO_PAGE_ADMIN, false);
-        }
-
-        if (isProfileVisibleToPageAdmin) {
-            getSupportActionBar().setTitle(R.string.member_profile);
-            identityProofWidget.setVisibility(View.GONE);
-        }
         fetchUserData();
     }
 
     private void fetchUserData() {
-        if (loadCurrentUser) {
-            renderData(StorageService.getInstance().getUser());
-        } else {
-            loadUserById();
-        }
-    }
-
-    private void loadUserById() {
-        RxNetwork.observeNetworkConnectivity(this)
-                .flatMapSingle(connectivity -> {
-                    if (connectivity.isAvailable()) {
-                        return NetworkService.getInstance().getUserProfile(userId);
-                    } else {
-                        throw new NetworkUnavailableException();
-                    }
-                })
-                .compose(RetryOperator::jainamRetryWhen)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                            if (response.getData() != null) {
-                                renderData(response.getData());
-                            }
-                        }, throwable -> {
-                            if (throwable instanceof NetworkUnavailableException) {
-                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Utils.logException(TAG, throwable);
-                            }
-                        }
-
-                );
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
-        return true;
+        renderData(StorageService.getInstance().getUser());
     }
 
     public void renderData(User user) {
         name.setText(user.getName());
 
-        phone.setText(user.getCountryCode() + " " + user.getMobile());
-        phone.setOnClickListener(v -> {
-            Utils.dialPhone(ProfileActivity.this, user.getCountryCode() + user.getMobile());
-        });
+        phone.setText(user.getCountryCode() + " " + user.getPhoneNumber());
+        phone.setOnClickListener(v -> Utils.dialPhone(ProfileActivity.this, user.getCountryCode() + user.getPhoneNumber()));
 
         // Set DOB
-        if (Utils.isNullOrEmpty(user.getDateOfBirth())) {
+        if (Utils.isNullOrEmpty(user.getDob())) {
             dob.setText("-");
         } else {
-            dob.setText(user.getDateOfBirth());
+            dob.setText(user.getDob());
         }
 
         // Set gender
@@ -168,13 +84,14 @@ public class ProfileActivity extends BaseActivity {
         }
 
         // Set Email
-        if (Utils.isNullOrEmpty(user.getEmail())) {
+        if (Utils.isNullOrEmpty(user.getEmailAddress())) {
             email.setText("-");
         } else {
-            email.setText(user.getEmail());
+            email.setText(user.getEmailAddress());
         }
 
-        // Set ID Proof
+        /*
+        //Set ID Proof
         if (!Utils.isNullOrEmpty(user.getIdProofAsString())) {
             ImageUtils.loadPicInView(this, user.getIdProofAsString(), idProof);
             if (user.getIdProofVerified()) {
@@ -189,16 +106,14 @@ public class ProfileActivity extends BaseActivity {
         if (!Utils.isNullOrEmpty(user.getProfilePicAsString())) {
             ImageUtils.loadPicInBorderedCircularView(this, user.getProfilePicAsString(), profilePic, 0, Utils.dpToPixels(2.0f), getResources().getColor(R.color.white));
         }
+        */
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        //Show these menus when current user profile is visible else hide
-        menu.findItem(R.id.menuEdit).setVisible(loadCurrentUser);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -211,7 +126,6 @@ public class ProfileActivity extends BaseActivity {
                 startActivityForResult(intent, REQUEST_EDIT_PROFILE);
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

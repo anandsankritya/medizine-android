@@ -3,7 +3,7 @@ package com.medizine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,11 +12,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseUser;
+import com.medizine.Constants;
 import com.medizine.R;
+import com.medizine.db.StorageService;
 import com.medizine.exceptions.NetworkUnavailableException;
+import com.medizine.model.entity.User;
 import com.medizine.network.NetworkService;
 import com.medizine.network.RetryOperator;
 import com.medizine.network.RxNetwork;
+import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
 
 import butterknife.BindView;
@@ -37,6 +41,8 @@ public class HomeActivity extends NavigationActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private String phoneNumber = null;
+
     @NonNull
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -52,8 +58,7 @@ public class HomeActivity extends NavigationActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        String phoneNumber = null;
-
+        phoneNumber = null;
         FirebaseUser user = getCurrentFirebaseUser();
         if (user != null && user.getPhoneNumber() != null && user.getPhoneNumber().startsWith(COUNTRY_CODE_IN)) {
             phoneNumber = user.getPhoneNumber().replace(COUNTRY_CODE_IN, "");
@@ -91,9 +96,48 @@ public class HomeActivity extends NavigationActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                             if (response.getData() != null) {
-                                showToast("User already exists.");
+                                StorageService.getInstance().getMedizineDatabase().userDao().insertOrUpdate((User) response.getData()).subscribeOn(Schedulers.io()).blockingAwait();
                             } else {
-                                showToast("User does not exists.");
+                                createUser(phoneNumber);
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
+    }
+
+    private void createUser(String phoneNumber) {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        User user = new User();
+        user.setCountryCode(COUNTRY_CODE_IN);
+        user.setPhoneNumber(phoneNumber);
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().createUser(user);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                StorageService.getInstance().getMedizineDatabase().userDao().insertOrUpdate((User) response.getData()).subscribeOn(Schedulers.io()).blockingAwait();
+                            } else {
+                                Utils.logOutUser();
                             }
                             hideProgressBar();
                             setProgressDialogMessage(getString(R.string.saving));

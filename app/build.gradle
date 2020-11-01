@@ -55,8 +55,8 @@ android {
         exclude 'lib/*/librsjni_androidx.so'
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
 
     compileOptions {

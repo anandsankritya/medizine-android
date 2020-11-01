@@ -39,11 +39,13 @@ public class UserTypeSelectionActivity extends BaseActivity {
         btnDoctorUserType.setOnClickListener(view -> {
             PrefService.getInstance().saveData(Constants.USER_TYPE, UserType.DOCTOR.name());
             LoginActivity.launchLoginActivity(UserTypeSelectionActivity.this);
+            finish();
         });
 
         btnNormalUserType.setOnClickListener(view -> {
             PrefService.getInstance().saveData(Constants.USER_TYPE, UserType.NORMAL.name());
             LoginActivity.launchLoginActivity(UserTypeSelectionActivity.this);
+            finish();
         });
     }
 }

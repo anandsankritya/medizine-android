@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "626621710019-4s7eugnakqvogqo8auh3tgpcnhrpkue3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medizine",
+            "certificate_hash": "9f4137e2ac4e6801072d74c938ef8cbe1c042fb3"
+          }
+        },
+        {
           "client_id": "626621710019-glhoa5rvpg38bls6dve2ov86q9sg57fc.apps.googleusercontent.com",
           "client_type": 3
         }

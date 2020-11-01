@@ -41,8 +41,6 @@ public class Constants {
     public static final int REQUEST_GET_PDF = 9;
     public static final String IS_ADMIN = "is_admin";
     public static final String DELETED = "deleted";
-    public static final String LOAD_CURRENT_USER = "loadCurrentUser";
-    public static final String PROFILE_VISIBLE_TO_PAGE_ADMIN = "profileVisibleToPageAdmin";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String ADDRESS = "address";

@@ -45,9 +45,9 @@ public class ContactUsActivity extends BaseActivity implements View.OnClickListe
 
     private CompositeDisposable networkDisposable;
 
-    public static void start(@androidx.annotation.NonNull Context context) {
-        Intent starter = new Intent(MedizineApp.getAppContext(), ContactUsActivity.class);
-        context.startActivity(starter);
+    public static void launchContactUsActivity(@NonNull Context context) {
+        Intent intent = new Intent(context, ContactUsActivity.class);
+        context.startActivity(intent);
     }
 
     @Override
@@ -89,6 +89,10 @@ public class ContactUsActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void sendRequest(@NonNull String request) {
+        Toast.makeText(ContactUsActivity.this, getResources().getString(R.string.request_sent), Toast.LENGTH_SHORT).show();
+        clearRequestArea();
+
+        /*
         final Feedback requestFeedback = new Feedback(request);
 
         Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
@@ -124,5 +128,6 @@ public class ContactUsActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
         networkDisposable.add(disposable);
+        */
     }
 }

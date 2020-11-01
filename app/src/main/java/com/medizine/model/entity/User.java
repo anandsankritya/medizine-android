@@ -1,60 +1,32 @@
 package com.medizine.model.entity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.medizine.Constants;
-import com.medizine.model.MediaLink;
-import com.medizine.utils.ImageUtils;
-
-import java.util.Objects;
-
 @Entity
 public class User {
-    @NonNull
     @PrimaryKey
+    @NonNull
     private String id;
-    private String countryCode;
-    private String mobile;
     private String name;
-    private String gcmToken;
-    private String userType;
-    private String profilePicImageId;
-    @Embedded(prefix = "profilePic")
-    private MediaLink profilePic;
+    private String emailAddress;
+    private String phoneNumber;
+    private String countryCode;
+    private String dob; //TODO: Need to parse
     private String gender;
-    private String dateOfBirth;
-    private String email;
-    private String idProofImageId;
-    @Embedded(prefix = "idProof")
-    private MediaLink idProof;
-    private Boolean isIdProofVerified;
+    private String bloodGroup;
+    private int weight;
 
     public User() {
     }
 
-    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getName() {
@@ -65,36 +37,36 @@ public class User {
         this.name = name;
     }
 
-    public String getGcmToken() {
-        return gcmToken;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setGcmToken(String gcmToken) {
-        this.gcmToken = gcmToken;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
-    public String getUserType() {
-        return userType;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getProfilePicImageId() {
-        return profilePicImageId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setProfilePicImageId(String profilePicImageId) {
-        this.profilePicImageId = profilePicImageId;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public MediaLink getProfilePic() {
-        return profilePic;
+    public String getDob() {
+        return dob;
     }
 
-    public void setProfilePic(MediaLink profilePic) {
-        this.profilePic = profilePic;
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public String getGender() {
@@ -105,94 +77,20 @@ public class User {
         this.gender = gender;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+    public String getBloodGroup() {
+        return bloodGroup;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 
-    public String getEmail() {
-        return email;
+    public int getWeight() {
+        return weight;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getIdProofImageId() {
-        return idProofImageId;
-    }
-
-    public void setIdProofImageId(String idProofImageId) {
-        this.idProofImageId = idProofImageId;
-    }
-
-    public MediaLink getIdProof() {
-        return idProof;
-    }
-
-    public void setIdProof(MediaLink idProof) {
-        this.idProof = idProof;
-    }
-
-    public Boolean getIdProofVerified() {
-        return isIdProofVerified;
-    }
-
-    public void setIdProofVerified(Boolean idProofVerified) {
-        isIdProofVerified = idProofVerified;
-    }
-
-    @Nullable
-    public String getProfilePicAsString() {
-        if (profilePic != null) {
-            return ImageUtils.getImageUrl(profilePic.getS3Links(), Constants.THUMBNAIL);
-        }
-        return null;
-    }
-
-    @Nullable
-    public String getIdProofAsString() {
-        if (idProof != null) {
-            return idProof.getS3Links().get(0).getLink();
-        }
-        return null;
-    }
-
-    public String getCountryCode() {
-        if (countryCode != null && !countryCode.isEmpty()) {
-            return countryCode;
-        } else {
-            return "+91";
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id) &&
-                Objects.equals(countryCode, user.countryCode) &&
-                Objects.equals(mobile, user.mobile) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(gcmToken, user.gcmToken) &&
-                Objects.equals(userType, user.userType) &&
-                Objects.equals(profilePicImageId, user.profilePicImageId) &&
-                Objects.equals(profilePic, user.profilePic) &&
-                Objects.equals(gender, user.gender) &&
-                Objects.equals(dateOfBirth, user.dateOfBirth) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(idProofImageId, user.idProofImageId) &&
-                Objects.equals(idProof, user.idProof) &&
-                Objects.equals(isIdProofVerified, user.isIdProofVerified);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, countryCode, mobile, name, gcmToken, userType, profilePicImageId, profilePic, gender, dateOfBirth, email, idProofImageId, idProof, isIdProofVerified);
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
 

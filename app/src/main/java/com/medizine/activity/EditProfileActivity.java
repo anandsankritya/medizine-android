@@ -55,6 +55,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
@@ -71,8 +72,8 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
     private static final String PROFILE_CURRENT_STATE = "userPatch";
     private static final String ALTERNATIVE_VERIFIED = "alternativeVerified";
     private static final String USER_IMAGE_PATH = "userImagePath";
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
     @Nullable
     protected CompositeDisposable networkDisposable;
     @BindView(R.id.name)
@@ -135,10 +136,10 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         }
 
         String dOB = dob.getText().toString();
-        currentUser.setDateOfBirth(dOB);
+        currentUser.setDob(dOB);
 
         String emailId = email.getText().toString();
-        currentUser.setEmail(emailId);
+        currentUser.setEmailAddress(emailId);
 
         return currentUser;
     }
@@ -157,7 +158,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         mUser = StorageService.getInstance().getUser();
 
         profilePicEditWidget.init(this, rxPermissions);
-        phone.setText(mUser.getCountryCode() + " " + mUser.getMobile());
+        phone.setText(mUser.getCountryCode() + " " + mUser.getPhoneNumber());
 
         if (savedInstanceState != null) {
             mCameraIdProofImagePath = gson.fromJson(savedInstanceState.getString(CAMERA_ID_PROOF_IMAGE_PATH), fileType);
@@ -177,8 +178,8 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         etName.setText(user.getName());
 
         // Set DOB
-        if (!Utils.isNullOrEmpty(user.getDateOfBirth())) {
-            dob.setText(user.getDateOfBirth());
+        if (!Utils.isNullOrEmpty(user.getDob())) {
+            dob.setText(user.getDob());
         }
 
         // Set Gender
@@ -189,11 +190,12 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         }
 
         // Set Email
-        if (!Utils.isNullOrEmpty(user.getEmail())) {
-            email.setText(user.getEmail());
+        if (!Utils.isNullOrEmpty(user.getEmailAddress())) {
+            email.setText(user.getEmailAddress());
         }
 
-        // Set Profile Pic
+        /*
+         //Set Profile Pic
         if (!Utils.isNullOrEmpty(userImagePath)) {
             profilePicEditWidget.setData(userImagePath);
         } else if (!Utils.isNullOrEmpty(user.getProfilePicAsString())) {
@@ -201,7 +203,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
             userImagePath = user.getProfilePicAsString();
         }
 
-        // Set Id Proof
+         //Set Id Proof
         if (!Utils.isNullOrEmpty(userIdProofImageUrl)) {
             ImageUtils.loadPicInView(this, userIdProofImageUrl, idProof);
             emptyIdProof.setVisibility(View.GONE);
@@ -210,6 +212,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
             userIdProofImageUrl = user.getIdProofAsString();
             emptyIdProof.setVisibility(View.GONE);
         }
+         */
 
         initializeListeners();
     }
@@ -273,7 +276,6 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -294,87 +296,45 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
         mUserPatch.setName(etName.getText().toString().trim());
 
         // Set DOB
-        mUserPatch.setDateOfBirth(dob.getText().toString());
+        //mUserPatch.setDob(dob.getText().toString());
 
         // Set Email
-        mUserPatch.setEmail(email.getText().toString());
+        mUserPatch.setEmailAddress(email.getText().toString());
 
         updateUser();
-
     }
 
     private void updateUser() {
-        mUserImage = profilePicEditWidget.getData();
-        if (mUser.getProfilePic() != null && mUser.getProfilePic().contains(mUserImage)) {
-            mUserImage = null;
-        }
-        RxNetwork.observeNetworkConnectivity(this)
-                .doOnSubscribe(__ -> {
-                    showProgressBar();
-                })
-                .doFinally(() -> hideProgressBar())
-                .flatMapSingle((Function<Connectivity, SingleSource<Response<MediaLink>>>) connectivity -> {
+        setProgressDialogMessage(getString(R.string.saving));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
                     if (connectivity.isAvailable()) {
-                        if (mUserImage != null) {
-                            // Upload Profile Pic
-                            File file = ImageUtils.processImageBeforeUpload(mUserImage);
-                            InputStream is = new BufferedInputStream(new FileInputStream(file));
-                            String mimeType = URLConnection.guessContentTypeFromStream(is);
-                            RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
-                            final MultipartBody.Part user_image = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                            final RequestBody fileName = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(System.nanoTime()));
-                            return NetworkService.getInstance().uploadMedia("image", user_image, fileName);
-                        } else {
-                            return Single.just(new Response<>());
-                        }
+                        return NetworkService.getInstance().patchUserById(mUserPatch);
                     } else {
                         throw new NetworkUnavailableException();
                     }
-                })
-                .flatMapSingle((Function<Response<MediaLink>, SingleSource<Response<MediaLink>>>) response -> {
-                    if (response != null && response.getData() != null) {
-                        mUserPatch.setProfilePicImageId(response.getData().getId());
-                    }
-
-                    if (mUser.getIdProof() != null && mUser.getIdProof().contains(userIdProofImageUrl)) {
-                        userIdProofImageUrl = null;
-                    }
-
-                    if (userIdProofImageUrl != null) {
-                        // Upload Id Proof
-                        File file = ImageUtils.processImageBeforeUpload(userIdProofImageUrl);
-                        InputStream is = new BufferedInputStream(new FileInputStream(file));
-                        String mimeType = URLConnection.guessContentTypeFromStream(is);
-                        RequestBody requestFile = RequestBody.create(MediaType.parse(mimeType), file);
-                        final MultipartBody.Part user_image = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                        final RequestBody fileName = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(System.nanoTime()));
-                        return NetworkService.getInstance().uploadMedia("image", user_image, fileName);
-                    }
-                    return Single.just(new Response<>());
-                })
-                .flatMapSingle(response -> {
-                    if (response != null && response.getData() != null) {
-                        mUserPatch.setIdProofImageId(response.getData().getId());
-                    }
-
-                    return NetworkService.getInstance().updateUser(mUserPatch);
                 })
                 .compose(RetryOperator::jainamRetryWhen)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    User user = response.getData();
-                    StorageService.getInstance().updateUser(user);
-                    setResult(RESULT_OK);
-                    onBackPressed();
-                }, throwable -> {
-                    if (throwable instanceof NetworkUnavailableException) {
-                        Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(EditProfileActivity.this, getString(R.string.oops_something_went_wrong), Toast.LENGTH_SHORT).show();
-                        Utils.logException(TAG, throwable);
-                    }
-                });
+                            User user = response.getData();
+                            StorageService.getInstance().updateUser(user);
+                            setResult(RESULT_OK);
+                            hideProgressBar();
+                            onBackPressed();
+                        }, throwable -> {
+                            hideProgressBar();
+                            if (throwable instanceof NetworkUnavailableException) {
+                                showToast(getString(R.string.internet_unavailable));
+                            } else {
+                                showToast(getString(R.string.oops_something_went_wrong));
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
     private boolean validate() {

@@ -35,18 +35,38 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.EditProfileActivity"></activity>
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.NavigationActivity" />
-        <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".activity.UserTypeSelectionActivity" />
+        <activity
+            android:name=".activity.ContactUsActivity"
+            android:parentActivityName=".activity.HomeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.EditProfileActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.NavigationActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HomeActivityTheme" />
+            android:theme="@style/AppTheme.NoTitleBar" />
+
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+
+        <activity
+            android:name=".activity.UserTypeSelectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"

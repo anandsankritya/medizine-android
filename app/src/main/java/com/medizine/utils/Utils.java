@@ -392,9 +392,9 @@ public class Utils {
         return "en";
     }
 
-    public static String getUserType() {
-        return getUser().getUserType();
-    }
+//    public static String getUserType() {
+//        return getUser().getUserType();
+//    }
 
     @NonNull
     public static String getBaseDirectory() {

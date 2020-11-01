@@ -59,14 +59,17 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
     protected void onCreateDrawer() {
         setupDrawer();
 
-        LiveData<User> userLiveData = StorageService.getInstance().getMedizineDatabase().userDao().getLiveData();
-        userLiveData.observe(this, user -> {
-            if (user != null) {
-                usernameTv.setText(user.getName());
-                ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, "", profilePic, R.drawable.profile_pic_white_border_circle,
-                        Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
-            }
-        });
+        if (Utils.isUserTypeNormal()) {
+            LiveData<User> userLiveData = StorageService.getInstance().getMedizineDatabase().userDao().getLiveData();
+            userLiveData.observe(this, user -> {
+                if (user != null) {
+                    usernameTv.setText(Utils.isNullOrEmpty(user.getName()) ? user.getCountryCode() + user.getPhoneNumber() : user.getName());
+                    ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, "", profilePic, R.drawable.profile_pic_white_border_circle,
+                            Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
+                }
+            });
+        }
+
     }
 
     private void setupDrawer() {
@@ -74,6 +77,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         mMenuItems = new ArrayList<>();
         mMenuItems.add(DrawerMenuItem.CONTACT_US);
         mMenuItems.add(DrawerMenuItem.SHARE_APP);
+        mMenuItems.add(DrawerMenuItem.LOG_OUT);
 
         mDrawerList.setAdapter(new DrawerMenuListAdapter(this, mMenuItems));
 
@@ -122,7 +126,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
 
     @OnClick({R.id.profilePic, R.id.usernameTv})
     public void profileViewClicked() {
-        ProfileActivity.openProfileActivity(NavigationActivity.this, true, null, false);
+        ProfileActivity.launchProfileActivity(NavigationActivity.this);
         mDrawerLayout.closeDrawers();
     }
 
@@ -131,10 +135,13 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (mMenuItems.get(position)) {
                 case CONTACT_US:
-                    ContactUsActivity.start(NavigationActivity.this);
+                    ContactUsActivity.launchContactUsActivity(NavigationActivity.this);
                     break;
                 case SHARE_APP:
                     Utils.shareApp();
+                    break;
+                case LOG_OUT:
+                    Utils.logOutUser();
             }
             mDrawerLayout.closeDrawers();
         }
