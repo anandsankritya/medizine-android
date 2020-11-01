@@ -1,6 +1,5 @@
 package com.medizine.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -20,7 +19,7 @@ public class SplashActivity extends BaseActivity {
                 UserTypeSelectionActivity.launchUserTypeSelectionActivity(this);
             }
             finish();
-        },1000);
+        }, 1000);
 
     }
 }

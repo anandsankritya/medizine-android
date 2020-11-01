@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import com.medizine.MedizineApp;
 import com.medizine.model.entity.User;
-import com.medizine.utils.Utils;
 
 import javax.inject.Inject;
 

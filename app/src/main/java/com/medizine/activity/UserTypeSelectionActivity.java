@@ -3,13 +3,10 @@ package com.medizine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.medizine.Constants;
 import com.medizine.R;
 import com.medizine.db.PrefService;

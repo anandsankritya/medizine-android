@@ -125,17 +125,32 @@ public class Constants {
     public static final int MIN_ALLOWED_RESOLUTION = 720;
     public static final String IS_NOTIFICATION_CHANNEL_SET = "isNotificationChannelSet";
     public static final String SECT = "sect";
+    public static final String EVENT_ID = "Event_ID";
+    public static final String INTERACTION_TYPE = "interactionType";
+    //Zoom Feature Related Constants
+    public static final int REQUEST_ZOOM_LOGIN = 1111;
+    public static final String MEET_ID = "meetId";
+    public static final String MEET_PASS = "meetPass";
+    public static final String HOST_USER_ID = "hostUserId";
+    public static final String ZOOM_OBJECT_ID = "zoomObjectId";
+    public static final String ZOOM_SELECTED_TEMPLE_ID = "zoomSelectedTempleId";
+    public static final String ZOOM_MEET_OBJ_JSON = "zoomMeetObjJson";
+    public static final String IS_MEETING_JOIN_ONLY = "isJoinMeetingOnly";
+    public static final String LIVE_USER_COUNT = "liveUserCount";
+    public static final String ZOOM_MEETING_ENDED = "zoomMeetingEnded";
+    public static final String ZOOM_LIVE_STREAMING_TAG = "zoomLiveStreamingTag";
+    public static final String WEB_DOMAIN = "zoom.us";
+    public static final String SDK_KEY = "";
+    public static final String SDK_SECRET = "";
+    public static final String TELEGRAM_LINK_PREFIX = "https://t.me/";
+    public static final String WHATS_APP_LINK_PREFIX = "https://wa.me/";
+    public static final String COUNTRY_CODE_IN = "+91";
     public static String PATH = MedizineApp.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getPath() + "/";
     public static String LOG_FILE_NAME = "logfile.txt";
     public static int SENSOR_SENSITIVITY = 20;
     public static String GITLAB_ISSUE_LABEL = "Production Bug";
-
-    public static final String EVENT_ID = "Event_ID";
-
     @NonNull
     public static String EMAIL_PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-    public static final String INTERACTION_TYPE = "interactionType";
 
     @Documented
     @StringDef({DOWNLOAD_IN_PROGRESS, NOT_DOWNLOADED, DOWNLOAD_FINISHED})
@@ -170,28 +185,5 @@ public class Constants {
         public static final String LANGUAGE = "Language";
         public static final String RATING = "app_rating";
     }
-
-    //Zoom Feature Related Constants
-    public static final int REQUEST_ZOOM_LOGIN = 1111;
-
-    public static final String MEET_ID = "meetId";
-    public static final String MEET_PASS = "meetPass";
-    public static final String HOST_USER_ID = "hostUserId";
-    public static final String ZOOM_OBJECT_ID = "zoomObjectId";
-    public static final String ZOOM_SELECTED_TEMPLE_ID = "zoomSelectedTempleId";
-    public static final String ZOOM_MEET_OBJ_JSON = "zoomMeetObjJson";
-    public static final String IS_MEETING_JOIN_ONLY = "isJoinMeetingOnly";
-    public static final String LIVE_USER_COUNT = "liveUserCount";
-    public static final String ZOOM_MEETING_ENDED = "zoomMeetingEnded";
-    public static final String ZOOM_LIVE_STREAMING_TAG = "zoomLiveStreamingTag";
-
-    public static final String WEB_DOMAIN = "zoom.us";
-    public static final String SDK_KEY = "";
-    public static final String SDK_SECRET = "";
-
-    public static final String TELEGRAM_LINK_PREFIX = "https://t.me/";
-    public static final String WHATS_APP_LINK_PREFIX = "https://wa.me/";
-
-    public static final String COUNTRY_CODE_IN = "+91";
 
 }

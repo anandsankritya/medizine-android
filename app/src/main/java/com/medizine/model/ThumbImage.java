@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import androidx.room.TypeConverters;
 
-
 import com.medizine.model.converters.MediaObjectListConverter;
 
 import java.util.List;
@@ -13,9 +12,6 @@ import java.util.Objects;
 
 @TypeConverters({MediaObjectListConverter.class})
 public class ThumbImage implements Parcelable {
-    private String id;
-    private List<MediaObject> s3Links;
-
     public static final Creator<ThumbImage> CREATOR = new Creator<ThumbImage>() {
         @Override
         public ThumbImage createFromParcel(Parcel in) {
@@ -27,6 +23,8 @@ public class ThumbImage implements Parcelable {
             return new ThumbImage[size];
         }
     };
+    private String id;
+    private List<MediaObject> s3Links;
 
     public ThumbImage() {
     }

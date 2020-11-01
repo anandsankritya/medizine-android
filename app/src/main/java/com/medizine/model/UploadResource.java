@@ -21,7 +21,7 @@ public abstract class UploadResource<T> {
 
     public void attachmentResponse(int i, MediaLink response) {
     }
-    
+
     @NonNull
     public abstract Completable storageCall(@Nullable T t);
 

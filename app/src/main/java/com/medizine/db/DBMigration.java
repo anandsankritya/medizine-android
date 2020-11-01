@@ -2,7 +2,6 @@ package com.medizine.db;
 
 import android.database.Cursor;
 
-import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class DBMigration {

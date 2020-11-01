@@ -87,7 +87,6 @@ public enum FirebaseRemoteConfigUpdate {
     }
 
 
-
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({LATEST_APP, FORCE_UPDATE_APP, UPDATE_APP})
     @interface APP_UPDATE {

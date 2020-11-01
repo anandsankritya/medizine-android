@@ -8,7 +8,7 @@
         android:layout_width="102dp"
         android:layout_height="102dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_pic_white_border_circle"/>
+        android:src="@drawable/profile_pic_white_border_circle" />
 
     <ImageView
         android:id="@+id/iv_edit_pic_bg"

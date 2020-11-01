@@ -3,10 +3,10 @@
     android:id="@+id/tvMenuSeparator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="18dp"
-    android:paddingEnd="18dp"
-    android:paddingTop="24dp"
     android:gravity="bottom"
+    android:paddingStart="18dp"
+    android:paddingTop="24dp"
+    android:paddingEnd="18dp"
     android:text="Others"
     android:textColor="@color/onSurfaceMetadata"
     android:textSize="13sp" />

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,22 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.medizine.MedizineApp;
 import com.medizine.R;
-import com.medizine.exceptions.NetworkUnavailableException;
-import com.medizine.model.Feedback;
-import com.medizine.network.NetworkService;
-import com.medizine.network.RxNetwork;
-import com.medizine.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.schedulers.Schedulers;
 
 public class ContactUsActivity extends BaseActivity implements View.OnClickListener {
 

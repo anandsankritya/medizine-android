@@ -379,7 +379,7 @@ public abstract class BaseRepository<T> {
                                         fetchObjectFromNetwork(t, resource);
                                     }
                                 }, throwable -> {
-                            fetchObjectFromNetwork(t, resource);
+                                    fetchObjectFromNetwork(t, resource);
                                 }
                         );
                 mCompositeDisposable.add(disposable);

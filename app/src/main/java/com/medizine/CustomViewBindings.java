@@ -2,13 +2,11 @@ package com.medizine;
 
 import android.widget.ImageView;
 
-
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 
 import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;

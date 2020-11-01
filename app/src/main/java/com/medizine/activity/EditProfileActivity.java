@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -23,11 +22,8 @@ import com.google.gson.reflect.TypeToken;
 import com.medizine.R;
 import com.medizine.db.StorageService;
 import com.medizine.exceptions.NetworkUnavailableException;
-import com.medizine.model.MediaLink;
-import com.medizine.model.Response;
 import com.medizine.model.entity.User;
 import com.medizine.model.enums.Gender;
-import com.medizine.network.Connectivity;
 import com.medizine.network.NetworkService;
 import com.medizine.network.RetryOperator;
 import com.medizine.network.RxNetwork;
@@ -35,12 +31,8 @@ import com.medizine.utils.ImageUtils;
 import com.medizine.utils.Utils;
 import com.medizine.widgets.ProfilePicEditWidget;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,16 +43,10 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class EditProfileActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = EditProfileActivity.class.getSimpleName();

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-
 import com.medizine.utils.Utils;
 
 import java.util.Objects;

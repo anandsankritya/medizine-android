@@ -113,9 +113,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_110sdp"
                         android:layout_marginTop="8dp"
+                        android:background="@drawable/edittext_background"
                         android:clickable="true"
                         android:focusable="false"
-                        android:background="@drawable/edittext_background"
                         android:hint="DD/MM/YYYY"
                         android:inputType="date"
                         android:nextFocusDown="@id/email"
@@ -168,9 +168,9 @@
                         android:padding="@dimen/_6sdp"
                         android:textColor="@color/onSurfaceText"
                         android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/phone"
-                        app:layout_constraintEnd_toEndOf="parent"
                         tools:text="abc@xyz.com" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -178,10 +178,10 @@
             </com.medizine.widgets.SectionWidget>
 
             <com.medizine.widgets.SectionWidget
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 app:titleText="@string/id_proof">
 
                 <FrameLayout

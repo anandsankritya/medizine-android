@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:width="100dp"
-        android:height="100dp"
-        android:viewportWidth="100"
-        android:viewportHeight="100">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
 
     <path
         android:fillColor="@color/grey400"
-        android:pathData="M0,0 0,100 100,100, 100,0"/>
+        android:pathData="M0,0 0,100 100,100, 100,0" />
 
     <path
         android:fillColor="@color/onSurfaceMetadata"
@@ -32,5 +32,5 @@ C67.8229,68.8749,76.0941,70.0345,83.3446,72.6475
 C91.9462,75.7476,93.4153,82.5663,93.6235,85.6766
 C93.6939,86.732,93.194,87.7489,92.3045,88.3215"
         android:strokeWidth="1"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
 </vector>

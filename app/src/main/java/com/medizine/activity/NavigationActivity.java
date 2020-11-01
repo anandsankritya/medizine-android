@@ -38,22 +38,17 @@ import butterknife.OnClick;
 @SuppressLint("Registered")
 public class NavigationActivity extends BaseActivity implements DrawerLocker {
 
+    protected ActionBarDrawerToggle mDrawerToggle;
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
-
     @BindView(R.id.leftDrawerLv)
     ListView mDrawerList;
-
     @BindView(R.id.usernameTv)
     TextView usernameTv;
-
     @BindView(R.id.profilePic)
     ImageView profilePic;
-
     @BindView(R.id.drawerRoot)
     ScrollView drawerRoot;
-
-    protected ActionBarDrawerToggle mDrawerToggle;
     private List<DrawerMenuItem> mMenuItems;
 
     protected void onCreateDrawer() {
@@ -132,23 +127,6 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         mDrawerLayout.closeDrawers();
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            switch (mMenuItems.get(position)) {
-                case CONTACT_US:
-                    ContactUsActivity.launchContactUsActivity(NavigationActivity.this);
-                    break;
-                case SHARE_APP:
-                    Utils.shareApp();
-                    break;
-                case LOG_OUT:
-                    Utils.logOutUser();
-            }
-            mDrawerLayout.closeDrawers();
-        }
-    }
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -168,5 +146,22 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
         mDrawerLayout.setDrawerLockMode(lockMode);
         mDrawerToggle.setDrawerIndicatorEnabled(enabled);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (mMenuItems.get(position)) {
+                case CONTACT_US:
+                    ContactUsActivity.launchContactUsActivity(NavigationActivity.this);
+                    break;
+                case SHARE_APP:
+                    Utils.shareApp();
+                    break;
+                case LOG_OUT:
+                    Utils.logOutUser();
+            }
+            mDrawerLayout.closeDrawers();
+        }
     }
 }

@@ -6,24 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 public class Resource<T> {
-    public enum Status {
-        UPLOADING,
-        DELETING,
-        EDITING,
-        FETCHING,
-        SUCCESS_FETCH,
-        SUCCESS_FETCH_LIVE,
-        SUCCESS_UPLOAD,
-        SUCCESS_EDIT,
-        SUCCESS_DELETE,
-        ERROR_NETWORK,
-        ERROR_ATTACHMENT,
-        ERROR_UNKNOWN
-    }
-
     private LiveData<T> liveData;
     private MutableLiveData<Status> statusLiveData;
-
     public Resource() {
         statusLiveData = new MutableLiveData<>();
         statusLiveData.setValue(Status.FETCHING);
@@ -53,11 +37,26 @@ public class Resource<T> {
         statusLiveData.removeObserver(observer);
     }
 
+    public Status getStatus() {
+        return statusLiveData.getValue();
+    }
+
     public void setStatus(Status status) {
         this.statusLiveData.postValue(status);
     }
 
-    public Status getStatus() {
-        return statusLiveData.getValue();
+    public enum Status {
+        UPLOADING,
+        DELETING,
+        EDITING,
+        FETCHING,
+        SUCCESS_FETCH,
+        SUCCESS_FETCH_LIVE,
+        SUCCESS_UPLOAD,
+        SUCCESS_EDIT,
+        SUCCESS_DELETE,
+        ERROR_NETWORK,
+        ERROR_ATTACHMENT,
+        ERROR_UNKNOWN
     }
 }

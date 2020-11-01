@@ -17,19 +17,19 @@ public enum DrawerMenuItem {
         this.resDrawable = resDrawable;
     }
 
-    public String getLocaleString(Context context) {
-        return context.getResources().getString(resourceId);
-    }
-
-    public int getImageResource() {
-        return resDrawable;
-    }
-
     public static DrawerMenuItem fromValue(int resourceId) {
         for (DrawerMenuItem item : values()) {
             if (item.resourceId == resourceId)
                 return item;
         }
         return SHARE_APP;
+    }
+
+    public String getLocaleString(Context context) {
+        return context.getResources().getString(resourceId);
+    }
+
+    public int getImageResource() {
+        return resDrawable;
     }
 }
