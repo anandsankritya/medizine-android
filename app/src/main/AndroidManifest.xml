@@ -35,13 +35,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.DoctorProfileActivity"></activity>
+        <activity android:name=".activity.EditDoctorProfileActivity"></activity>
+        <activity android:name=".activity.DoctorProfileActivity" />
         <activity
             android:name=".activity.ContactUsActivity"
             android:parentActivityName=".activity.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name=".activity.EditUserProfileActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserProfileActivity"

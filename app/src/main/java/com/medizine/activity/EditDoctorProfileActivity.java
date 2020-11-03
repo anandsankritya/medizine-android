@@ -22,7 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.medizine.R;
 import com.medizine.db.StorageService;
 import com.medizine.exceptions.NetworkUnavailableException;
-import com.medizine.model.entity.User;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.enums.Gender;
 import com.medizine.network.NetworkService;
 import com.medizine.network.RetryOperator;
@@ -48,16 +48,16 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class EditProfileActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
-    private static final String TAG = EditProfileActivity.class.getSimpleName();
+public class EditDoctorProfileActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
+    private static final String TAG = EditDoctorProfileActivity.class.getSimpleName();
     private static final int REQUEST_CAMERA_ID_PROOF = 103;
     private static final int SELECT_FILE_ID_PROOF = 104;
     private static final String CAMERA_ID_PROOF_IMAGE_PATH = "cameraIdProofImagePath";
-    private static final String USER_IMAGE = "userImage";
-    private static final String USER_ID_PROOF_IMAGE = "userIdProofImage";
-    private static final String PROFILE_CURRENT_STATE = "userPatch";
+    private static final String USER_IMAGE = "doctorImage";
+    private static final String USER_ID_PROOF_IMAGE = "doctorIdProofImage";
+    private static final String PROFILE_CURRENT_STATE = "doctorPatch";
     private static final String ALTERNATIVE_VERIFIED = "alternativeVerified";
-    private static final String USER_IMAGE_PATH = "userImagePath";
+    private static final String USER_IMAGE_PATH = "doctorImagePath";
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Nullable
@@ -83,57 +83,57 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
     @BindView(R.id.profilPicEditWidget)
     ProfilePicEditWidget profilePicEditWidget;
     File mCameraIdProofImagePath;
-    String mUserImage;
-    String userIdProofImageUrl;
-    String userImagePath;
-    private User mUser;
-    private User mUserPatch;
+    String mDoctorImage;
+    String doctorIdProofImageUrl;
+    String doctorImagePath;
+    private Doctor mDoctor;
+    private Doctor mDoctorPatch;
     private boolean hasAlternativeVerified = false;
     private Gson gson = new Gson();
     private Type fileType = new TypeToken<File>() {
     }.getType();
-    private Type userType = new TypeToken<User>() {
+    private Type doctorType = new TypeToken<Doctor>() {
     }.getType();
 
     @Override
     protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(PROFILE_CURRENT_STATE, gson.toJson(getCurrentState(), userType));
+        outState.putString(PROFILE_CURRENT_STATE, gson.toJson(getCurrentState(), doctorType));
         outState.putString(CAMERA_ID_PROOF_IMAGE_PATH, gson.toJson(mCameraIdProofImagePath, fileType));
-        outState.putString(USER_IMAGE, mUserImage);
-        outState.putString(USER_ID_PROOF_IMAGE, userIdProofImageUrl);
+        outState.putString(USER_IMAGE, mDoctorImage);
+        outState.putString(USER_ID_PROOF_IMAGE, doctorIdProofImageUrl);
         if (profilePicEditWidget.getData() != null) {
-            userImagePath = profilePicEditWidget.getData();
+            doctorImagePath = profilePicEditWidget.getData();
         }
-        outState.putString(USER_IMAGE_PATH, userImagePath);
+        outState.putString(USER_IMAGE_PATH, doctorImagePath);
         outState.putBoolean(ALTERNATIVE_VERIFIED, hasAlternativeVerified);
     }
 
-    private User getCurrentState() {
-        User currentUser = new User();
+    private Doctor getCurrentState() {
+        Doctor currentDoctor = new Doctor();
 
         String name = etName.getText().toString();
-        currentUser.setName(name);
+        currentDoctor.setName(name);
 
         if (rbFemale.getId() == genderGroup.getCheckedRadioButtonId()) {
-            currentUser.setGender(Gender.FEMALE.toString());
+            currentDoctor.setGender(Gender.FEMALE.toString());
         } else if (rbMale.getId() == genderGroup.getCheckedRadioButtonId()) {
-            currentUser.setGender(Gender.MALE.toString());
+            currentDoctor.setGender(Gender.MALE.toString());
         }
 
         String dOB = dob.getText().toString();
-        currentUser.setDob(dOB);
+        currentDoctor.setDob(dOB);
 
         String emailId = email.getText().toString();
-        currentUser.setEmailAddress(emailId);
+        currentDoctor.setEmailAddress(emailId);
 
-        return currentUser;
+        return currentDoctor;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_edit_doctor_profile);
         ButterKnife.bind(this);
 
         if (getSupportActionBar() != null) {
@@ -141,61 +141,61 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
             getSupportActionBar().setTitle(R.string.edit_profile);
         }
 
-        mUser = StorageService.getInstance().getUser();
+        mDoctor = StorageService.getInstance().getDoctor();
 
         profilePicEditWidget.init(this, rxPermissions);
-        phone.setText(mUser.getCountryCode() + " " + mUser.getPhoneNumber());
+        phone.setText(mDoctor.getCountryCode() + " " + mDoctor.getPhoneNumber());
 
         if (savedInstanceState != null) {
             mCameraIdProofImagePath = gson.fromJson(savedInstanceState.getString(CAMERA_ID_PROOF_IMAGE_PATH), fileType);
-            mUserImage = savedInstanceState.getString(USER_IMAGE);
-            userIdProofImageUrl = savedInstanceState.getString(USER_ID_PROOF_IMAGE);
-            mUserPatch = gson.fromJson(savedInstanceState.getString(PROFILE_CURRENT_STATE), userType);
+            mDoctorImage = savedInstanceState.getString(USER_IMAGE);
+            doctorIdProofImageUrl = savedInstanceState.getString(USER_ID_PROOF_IMAGE);
+            mDoctorPatch = gson.fromJson(savedInstanceState.getString(PROFILE_CURRENT_STATE), doctorType);
             hasAlternativeVerified = savedInstanceState.getBoolean(ALTERNATIVE_VERIFIED);
-            userImagePath = savedInstanceState.getString(USER_IMAGE_PATH);
-            initialize(mUserPatch);
+            doctorImagePath = savedInstanceState.getString(USER_IMAGE_PATH);
+            initialize(mDoctorPatch);
         } else {
-            mUserPatch = new User();
-            initialize(mUser);
+            mDoctorPatch = new Doctor();
+            initialize(mDoctor);
         }
     }
 
-    private void initialize(User user) {
-        etName.setText(user.getName());
+    private void initialize(Doctor doctor) {
+        etName.setText(doctor.getName());
 
         // Set DOB
-        if (!Utils.isNullOrEmpty(user.getDob())) {
-            dob.setText(user.getDob());
+        if (!Utils.isNullOrEmpty(doctor.getDob())) {
+            dob.setText(doctor.getDob());
         }
 
         // Set Gender
-        if (Gender.MALE.toString().equalsIgnoreCase(user.getGender())) {
+        if (Gender.MALE.toString().equalsIgnoreCase(doctor.getGender())) {
             rbMale.setChecked(true);
-        } else if (Gender.FEMALE.toString().equalsIgnoreCase(user.getGender())) {
+        } else if (Gender.FEMALE.toString().equalsIgnoreCase(doctor.getGender())) {
             rbFemale.setChecked(true);
         }
 
         // Set Email
-        if (!Utils.isNullOrEmpty(user.getEmailAddress())) {
-            email.setText(user.getEmailAddress());
+        if (!Utils.isNullOrEmpty(doctor.getEmailAddress())) {
+            email.setText(doctor.getEmailAddress());
         }
 
         /*
          //Set Profile Pic
-        if (!Utils.isNullOrEmpty(userImagePath)) {
-            profilePicEditWidget.setData(userImagePath);
-        } else if (!Utils.isNullOrEmpty(user.getProfilePicAsString())) {
-            profilePicEditWidget.setData(user.getProfilePicAsString());
-            userImagePath = user.getProfilePicAsString();
+        if (!Utils.isNullOrEmpty(doctorImagePath)) {
+            profilePicEditWidget.setData(doctorImagePath);
+        } else if (!Utils.isNullOrEmpty(doctor.getProfilePicAsString())) {
+            profilePicEditWidget.setData(doctor.getProfilePicAsString());
+            doctorImagePath = doctor.getProfilePicAsString();
         }
 
          //Set Id Proof
-        if (!Utils.isNullOrEmpty(userIdProofImageUrl)) {
-            ImageUtils.loadPicInView(this, userIdProofImageUrl, idProof);
+        if (!Utils.isNullOrEmpty(doctorIdProofImageUrl)) {
+            ImageUtils.loadPicInView(this, doctorIdProofImageUrl, idProof);
             emptyIdProof.setVisibility(View.GONE);
-        } else if (!Utils.isNullOrEmpty(user.getIdProofAsString())) {
-            ImageUtils.loadPicInView(this, user.getIdProofAsString(), idProof);
-            userIdProofImageUrl = user.getIdProofAsString();
+        } else if (!Utils.isNullOrEmpty(doctor.getIdProofAsString())) {
+            ImageUtils.loadPicInView(this, doctor.getIdProofAsString(), idProof);
+            doctorIdProofImageUrl = doctor.getIdProofAsString();
             emptyIdProof.setVisibility(View.GONE);
         }
          */
@@ -210,10 +210,10 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
             rbMale.setError(null);
             switch (checkedId) {
                 case R.id.rbMale:
-                    mUserPatch.setGender(Gender.MALE.toString());
+                    mDoctorPatch.setGender(Gender.MALE.toString());
                     break;
                 case R.id.rbFemale:
-                    mUserPatch.setGender(Gender.FEMALE.toString());
+                    mDoctorPatch.setGender(Gender.FEMALE.toString());
                     break;
             }
         });
@@ -235,7 +235,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         profilePicEditWidget.onActivityResult(requestCode, resultCode, data);
-        userImagePath = profilePicEditWidget.getData();
+        doctorImagePath = profilePicEditWidget.getData();
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CAMERA_ID_PROOF:
@@ -244,7 +244,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
                         if (imageUri != null) {
                             ImageUtils.loadPicInView(this, imageUri, idProof);
                             emptyIdProof.setVisibility(View.GONE);
-                            userIdProofImageUrl = mCameraIdProofImagePath.getAbsolutePath();
+                            doctorIdProofImageUrl = mCameraIdProofImagePath.getAbsolutePath();
                             ImageUtils.refreshGallery(this, imageUri.getPath());
                         }
                     }
@@ -255,7 +255,7 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
                         if (!Utils.isNullOrEmpty(path)) {
                             ImageUtils.loadPicInView(this, path, idProof);
                             emptyIdProof.setVisibility(View.GONE);
-                            userIdProofImageUrl = path;
+                            doctorIdProofImageUrl = path;
                         }
                     }
             }
@@ -279,25 +279,25 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
 
     private void uploadProfileDetail() {
         // Set name
-        mUserPatch.setName(etName.getText().toString().trim());
+        mDoctorPatch.setName(etName.getText().toString().trim());
 
         // Set DOB
-        //mUserPatch.setDob(dob.getText().toString());
+        //mDoctorPatch.setDob(dob.getText().toString());
 
         // Set Email
-        mUserPatch.setEmailAddress(email.getText().toString());
+        mDoctorPatch.setEmailAddress(email.getText().toString());
 
-        updateUser();
+        updateDoctor();
     }
 
-    private void updateUser() {
+    private void updateDoctor() {
         setProgressDialogMessage(getString(R.string.saving));
         showProgressBar();
 
         Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
                 .flatMapSingle(connectivity -> {
                     if (connectivity.isAvailable()) {
-                        return NetworkService.getInstance().patchUserById(mUserPatch);
+                        return NetworkService.getInstance().patchDoctorById(mDoctorPatch);
                     } else {
                         throw new NetworkUnavailableException();
                     }
@@ -306,8 +306,8 @@ public class EditProfileActivity extends BaseActivity implements DatePickerDialo
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                            User user = response.getData();
-                            StorageService.getInstance().updateUser(user);
+                            Doctor doctor = response.getData();
+                            StorageService.getInstance().updateDoctor(doctor);
                             setResult(RESULT_OK);
                             hideProgressBar();
                             onBackPressed();

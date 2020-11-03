@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.medizine.widgets.ProfilePicEditWidget
+                android:id="@+id/profilPicEditWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp" />
+
+            <com.medizine.widgets.SectionWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleText="@string/personal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textColor="@color/onSurfaceSubtitle"
+                        app:layout_constraintBaseline_toBaselineOf="@id/name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_110sdp"
+                        android:background="@drawable/edittext_background"
+                        android:inputType="textPersonName"
+                        android:nextFocusDown="@id/dateOfBirth"
+                        android:padding="@dimen/_6sdp"
+                        android:textColor="@color/onSurfaceText"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Akash Sankritya" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/gender"
+                        android:textColor="@color/onSurfaceSubtitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                    <RadioGroup
+                        android:id="@+id/genderGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_110sdp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/name">
+
+                        <RadioButton
+                            android:id="@+id/rbMale"
+                            android:layout_width="100sp"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@drawable/selector_radio_button"
+                            android:text="@string/male"
+                            android:textColor="@color/onSurfaceText"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbFemale"
+                            android:layout_width="110sp"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@drawable/selector_radio_button"
+                            android:text="@string/female"
+                            android:textColor="@color/onSurfaceText"
+                            android:textSize="14sp" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/date_of_birth"
+                        android:textColor="@color/onSurfaceSubtitle"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/dateOfBirth"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/genderGroup" />
+
+                    <EditText
+                        android:id="@+id/dateOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_110sdp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="DD/MM/YYYY"
+                        android:inputType="date"
+                        android:nextFocusDown="@id/email"
+                        android:padding="@dimen/_6sdp"
+                        android:textColor="@color/onSurfaceText"
+                        android:textColorHint="@color/onSurfaceHint"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/genderGroup"
+                        tools:text="09/11/1989" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/phone_number"
+                        android:textColor="@color/onSurfaceTitle"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/phone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
+
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_110sdp"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/onSurfaceText"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/email"
+                        android:textColor="@color/onSurfaceSubtitle"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/email"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_110sdp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:inputType="textEmailAddress"
+                        android:padding="@dimen/_6sdp"
+                        android:textColor="@color/onSurfaceText"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/phone"
+                        tools:text="abc@xyz.com" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.medizine.widgets.SectionWidget>
+
+            <com.medizine.widgets.SectionWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:titleText="@string/id_proof">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/idProof"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/emptyIdProof"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:background="@color/grey200"
+                        android:gravity="center"
+                        android:text="@string/upload_identity_proof" />
+                </FrameLayout>
+            </com.medizine.widgets.SectionWidget>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

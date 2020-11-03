@@ -82,7 +82,15 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
                 }
             });
         } else if (Utils.isUserTypeDoctor()) {
-            //TODO: Implement for doctor (Akash)
+            LiveData<Doctor> doctorLiveData = StorageService.getInstance().getMedizineDatabase().doctorDao().getLiveData();
+            doctorLiveData.observe(this, doctor -> {
+                if (doctor != null) {
+                    usernameTv.setText(Utils.isNullOrEmpty(doctor.getName()) ? doctor.getCountryCode() + doctor.getPhoneNumber() : doctor.getName());
+                    ImageUtils.loadPicInBorderedCircularView(NavigationActivity.this, "", profilePic, R.drawable.profile_pic_white_border_circle,
+                            Utils.dpToPixels(1.0f), getResources().getColor(R.color.white));
+                    //fetchAllAppointments();
+                }
+            });
         } else {
             Utils.logOutUser();
         }
@@ -181,7 +189,11 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
 
     @OnClick({R.id.profilePic, R.id.usernameTv})
     public void profileViewClicked() {
-        UserProfileActivity.launchProfileActivity(NavigationActivity.this);
+        if (Utils.isUserTypeNormal()) {
+            UserProfileActivity.launchUserProfileActivity(NavigationActivity.this);
+        } else if (Utils.isUserTypeDoctor()) {
+            DoctorProfileActivity.launchDoctorProfileActivity(NavigationActivity.this);
+        }
         mDrawerLayout.closeDrawers();
     }
 

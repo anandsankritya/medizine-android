@@ -36,7 +36,8 @@ public class Constants {
     public static final String OBJECT_TYPE = "objectType";
     public static final String HAS_PERMISSION = "hasPermission";
     public static final String USER_LIST = "userList";
-    public static final int REQUEST_EDIT_PROFILE = 1;
+    public static final int REQUEST_EDIT_USER_PROFILE = 1010;
+    public static final int REQUEST_EDIT_DOCTOR_PROFILE = 1011;
     public static final int REQUEST_JOIN_ZOOM_MEETING = 501;
     public static final int REQUEST_GET_PDF = 9;
     public static final String IS_ADMIN = "is_admin";

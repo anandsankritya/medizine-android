@@ -51,13 +51,17 @@ public class NetworkService {
         return retrofitInterface.patchUserById(StorageService.getInstance().getUser().getId(), user);
     }
 
-//    public Single<Response<MediaLink>> uploadMedia(String type, MultipartBody.Part requestBodyFile, RequestBody name) {
-//        return retrofitInterface.uploadMedia(type, false, requestBodyFile, name);
-//    }
-
     //Doctor APIs
     public Single<Response<Object>> getDoctorByPhoneNumber(String phoneNumber) {
         return retrofitInterface.getDoctorByPhoneNumber(Constants.COUNTRY_CODE_IN, phoneNumber);
+    }
+
+    public Single<Response<Doctor>> createDoctor(Doctor doctor) {
+        return retrofitInterface.createDoctor(doctor);
+    }
+
+    public Single<Response<Doctor>> patchDoctorById(Doctor doctor) {
+        return retrofitInterface.patchDoctorById(StorageService.getInstance().getDoctor().getId(), doctor);
     }
 
     public Single<Response<List<Doctor>>> getAllDoctors() {

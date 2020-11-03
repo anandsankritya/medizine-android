@@ -39,6 +39,12 @@ public interface RetrofitInterface {
     Single<Response<Object>> getDoctorByPhoneNumber(@Query("countryCode") String countryCode,
                                                     @Query("phoneNumber") String phoneNumber);
 
+    @POST("/medizine/v1/doctor/create")
+    Single<Response<Doctor>> createDoctor(@Body Doctor doctor);
+
+    @PATCH("/medizine/v1/doctor/patchById")
+    Single<Response<Doctor>> patchDoctorById(@Query("id") String doctorId, @Body Doctor doctor);
+
     @GET("/medizine/v1/doctor/getMany")
     Single<Response<List<Doctor>>> getAllDoctors();
 }

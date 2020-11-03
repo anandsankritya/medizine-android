@@ -17,7 +17,7 @@ import com.medizine.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.medizine.Constants.REQUEST_EDIT_PROFILE;
+import static com.medizine.Constants.REQUEST_EDIT_USER_PROFILE;
 
 public class UserProfileActivity extends BaseActivity {
     private static final String TAG = UserProfileActivity.class.getSimpleName();
@@ -32,18 +32,8 @@ public class UserProfileActivity extends BaseActivity {
     TextView phone;
     @BindView(R.id.email)
     TextView email;
-//    @BindView(R.id.idProof)
-//    ImageView idProof;
-//    @BindView(R.id.iv_profile)
-//    ImageView profilePic;
-//    @BindView(R.id.emptyIdProof)
-//    TextView emptyIdProof;
-//    @BindView(R.id.verifiedIdProof)
-//    ImageView verifiedIdProof;
-//    @BindView(R.id.identityProofWidget)
-//    SectionWidget identityProofWidget;
 
-    public static void launchProfileActivity(Context context) {
+    public static void launchUserProfileActivity(Context context) {
         Intent intent = new Intent(context, UserProfileActivity.class);
         context.startActivity(intent);
     }
@@ -65,48 +55,26 @@ public class UserProfileActivity extends BaseActivity {
 
     public void renderData(User user) {
         name.setText(user.getName());
-
         phone.setText(user.getCountryCode() + " " + user.getPhoneNumber());
         phone.setOnClickListener(v -> Utils.dialPhone(UserProfileActivity.this, user.getCountryCode() + user.getPhoneNumber()));
-
         // Set DOB
         if (Utils.isNullOrEmpty(user.getDob())) {
             dob.setText("-");
         } else {
             dob.setText(user.getDob());
         }
-
         // Set gender
         if (Utils.isNullOrEmpty(user.getGender())) {
             gender.setText("-");
         } else {
             gender.setText(user.getGender());
         }
-
         // Set Email
         if (Utils.isNullOrEmpty(user.getEmailAddress())) {
             email.setText("-");
         } else {
             email.setText(user.getEmailAddress());
         }
-
-        /*
-        //Set ID Proof
-        if (!Utils.isNullOrEmpty(user.getIdProofAsString())) {
-            ImageUtils.loadPicInView(this, user.getIdProofAsString(), idProof);
-            if (user.getIdProofVerified()) {
-                verifiedIdProof.setVisibility(View.VISIBLE);
-            }
-            emptyIdProof.setVisibility(View.GONE);
-        } else {
-            emptyIdProof.setVisibility(View.VISIBLE);
-        }
-
-        // Set Profile Pic
-        if (!Utils.isNullOrEmpty(user.getProfilePicAsString())) {
-            ImageUtils.loadPicInBorderedCircularView(this, user.getProfilePicAsString(), profilePic, 0, Utils.dpToPixels(2.0f), getResources().getColor(R.color.white));
-        }
-        */
     }
 
     @Override
@@ -122,8 +90,8 @@ public class UserProfileActivity extends BaseActivity {
                 onBackPressed();
                 return true;
             case R.id.menuEdit:
-                Intent intent = new Intent(this, EditProfileActivity.class);
-                startActivityForResult(intent, REQUEST_EDIT_PROFILE);
+                Intent intent = new Intent(this, EditUserProfileActivity.class);
+                startActivityForResult(intent, REQUEST_EDIT_USER_PROFILE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -132,7 +100,7 @@ public class UserProfileActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_EDIT_PROFILE) {
+        if (requestCode == REQUEST_EDIT_USER_PROFILE) {
             if (resultCode == RESULT_OK) {
                 fetchUserData();
             }

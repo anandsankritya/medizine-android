@@ -192,7 +192,42 @@ public class HomeActivity extends NavigationActivity {
     }
 
     private void createDoctor(String phoneNumber) {
-        //TODO: Implement method like `createUser` (Akash)
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Doctor doctor = new Doctor();
+        doctor.setCountryCode(COUNTRY_CODE_IN);
+        doctor.setPhoneNumber(phoneNumber);
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().createDoctor(doctor);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                StorageService.getInstance().getMedizineDatabase().doctorDao().insertOrUpdate((Doctor) response.getData()).subscribeOn(Schedulers.io()).blockingAwait();
+                            } else {
+                                Utils.logOutUser();
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
     @Override

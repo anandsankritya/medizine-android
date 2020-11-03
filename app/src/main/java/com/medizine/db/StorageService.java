@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.medizine.MedizineApp;
+import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.User;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ public enum StorageService {
     @Inject
     MedizineDatabase mMedizineDatabase;
     private User mUser;
+    private Doctor mDoctor;
     private String privateKey;
 
     StorageService() {
@@ -37,6 +39,7 @@ public enum StorageService {
 
     public void clearCache() {
         mUser = null;
+        mDoctor = null;
     }
 
     public User getUser() {
@@ -50,10 +53,28 @@ public enum StorageService {
         return mUser;
     }
 
+    public Doctor getDoctor() {
+        if (mDoctor == null) {
+            mDoctor = getMedizineDatabase()
+                    .doctorDao()
+                    .get()
+                    .subscribeOn(Schedulers.io())
+                    .blockingGet();
+        }
+        return mDoctor;
+    }
+
     public void updateUser(@Nullable User user) {
         if (user != null) {
             mUser = user;
             getMedizineDatabase().userDao().insertOrUpdate(user).subscribeOn(Schedulers.io()).blockingAwait();
+        }
+    }
+
+    public void updateDoctor(@Nullable Doctor doctor) {
+        if (doctor != null) {
+            mDoctor = doctor;
+            getMedizineDatabase().doctorDao().insertOrUpdate(doctor).subscribeOn(Schedulers.io()).blockingAwait();
         }
     }
 
