@@ -8,6 +8,7 @@ import com.medizine.model.entity.Appointment;
 import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.Slot;
 import com.medizine.model.entity.User;
+import com.medizine.model.request.SlotBookingRequest;
 
 import java.util.List;
 
@@ -79,8 +80,8 @@ public class NetworkService {
     }
 
     //Slot APIs
-    public Single<Response<Appointment>> bookAppointment(Slot slot) {
-        return retrofitInterface.book(slot);
+    public Single<Response<Appointment>> bookAppointment(SlotBookingRequest slotBookingRequest) {
+        return retrofitInterface.book(slotBookingRequest);
     }
 
     public Single<Response<Slot>> createSlot(Slot slot) {

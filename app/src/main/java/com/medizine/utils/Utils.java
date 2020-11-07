@@ -1503,7 +1503,6 @@ public class Utils {
 
     public static String getFormattedDay(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd, EEE");
-        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
         return sdf.format(date);
     }
 }

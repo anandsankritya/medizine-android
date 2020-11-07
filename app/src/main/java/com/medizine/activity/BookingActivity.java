@@ -49,7 +49,6 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
     @Nullable
     private String mDoctorId;
     private SlotListAdapter mSlotListAdapter;
-    private ArrayList<Date> dates = new ArrayList<>();
 
     public static void launchBookingActivity(@NonNull Context context, @NonNull String doctorId) {
         Intent intent = new Intent(context, BookingActivity.class);
@@ -70,55 +69,57 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         mSlotListAdapter = new SlotListAdapter(this, false, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mSlotListAdapter);
+        btnDayOne.setOnClickListener(new ThrottleClick() {
+            @Override
+            public void onClick() {
+                loadUIForThreeDates(0);
+            }
+        });
+        btnDayTwo.setOnClickListener(new ThrottleClick() {
+            @Override
+            public void onClick() {
+                loadUIForThreeDates(1);
+            }
+        });
+        btnDayThree.setOnClickListener(new ThrottleClick() {
+            @Override
+            public void onClick() {
+                loadUIForThreeDates(2);
+            }
+        });
+        loadUIForThreeDates(0);
+    }
 
+    private void loadUIForThreeDates(int selectedDay) {
+        ArrayList<Date> dates = new ArrayList<>();
         Calendar calendarDay = Calendar.getInstance();
         for (int i = 0; i < 3; i++) {
             dates.add(calendarDay.getTime());
             calendarDay.add(Calendar.DAY_OF_WEEK, 1);
         }
 
-        btnDayOne.setOnClickListener(new ThrottleClick() {
-            @Override
-            public void onClick() {
-                loadDayOneUI();
-            }
-        });
-        btnDayTwo.setOnClickListener(new ThrottleClick() {
-            @Override
-            public void onClick() {
-                Date date = dates.get(1);
-                btnDayOne.setText(Utils.getFormattedDay(date));
-                mSlotListAdapter.setList(null);
-                renderSlotsForDoctor(mDoctorId, date);
-                updateSelectedButtonBackground(btnDayTwo.getId());
-            }
-        });
-        btnDayThree.setOnClickListener(new ThrottleClick() {
-            @Override
-            public void onClick() {
-                Date date = dates.get(2);
-                btnDayOne.setText(Utils.getFormattedDay(date));
-                mSlotListAdapter.setList(null);
-                renderSlotsForDoctor(mDoctorId, date);
-                updateSelectedButtonBackground(btnDayThree.getId());
-            }
-        });
+        btnDayOne.setText(Utils.getFormattedDay(dates.get(0)));
+        btnDayTwo.setText(Utils.getFormattedDay(dates.get(1)));
+        btnDayThree.setText(Utils.getFormattedDay(dates.get(2)));
 
-        loadDayOneUI();
-    }
-
-    private void loadDayOneUI() {
-        updateSelectedButtonBackground(btnDayOne.getId());
-        Date date = dates.get(0);
-        btnDayOne.setText(Utils.getFormattedDay(date));
         mSlotListAdapter.setList(null);
-        renderSlotsForDoctor(mDoctorId, date);
+
+        if (selectedDay == 0) {
+            renderSlotsForDoctor(mDoctorId, dates.get(0));
+            updateSelectedButtonBackground(R.id.btnDayOne);
+        } else if (selectedDay == 1) {
+            renderSlotsForDoctor(mDoctorId, dates.get(1));
+            updateSelectedButtonBackground(R.id.btnDayTwo);
+        } else if (selectedDay == 2) {
+            renderSlotsForDoctor(mDoctorId, dates.get(2));
+            updateSelectedButtonBackground(R.id.btnDayThree);
+        }
     }
 
     private void updateSelectedButtonBackground(int selectedBtnId) {
-        btnDayOne.setBackgroundColor(getResources().getColor(btnDayOne.getId() == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
-        btnDayTwo.setBackgroundColor(getResources().getColor(btnDayTwo.getId() == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
-        btnDayThree.setBackgroundColor(getResources().getColor(btnDayThree.getId() == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
+        btnDayOne.setBackgroundColor(getResources().getColor(R.id.btnDayOne == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
+        btnDayTwo.setBackgroundColor(getResources().getColor(R.id.btnDayTwo == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
+        btnDayThree.setBackgroundColor(getResources().getColor(R.id.btnDayThree == selectedBtnId ? R.color.transparent_black_light : R.color.transparent));
     }
 
     private void renderSlotsForDoctor(String doctorId, Date date) {
@@ -167,7 +168,7 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         Disposable disposable = RxNetwork.observeNetworkConnectivity(context)
                 .flatMapSingle(connectivity -> {
                     if (connectivity.isAvailable()) {
-                        return NetworkService.getInstance().bookAppointment(slot);
+                        return NetworkService.getInstance().bookAppointment(slotBookingRequest);
                     } else {
                         throw new NetworkUnavailableException();
                     }
@@ -176,8 +177,8 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                            loadDayOneUI();
-                            hideProgressBar();
+                    loadUIForThreeDates(0);
+                    hideProgressBar();
                             setProgressDialogMessage(getString(R.string.saving));
                         }, throwable -> {
                             hideProgressBar();

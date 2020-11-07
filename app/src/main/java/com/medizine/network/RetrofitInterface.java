@@ -6,6 +6,7 @@ import com.medizine.model.entity.Appointment;
 import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.Slot;
 import com.medizine.model.entity.User;
+import com.medizine.model.request.SlotBookingRequest;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public interface RetrofitInterface {
 
     //Slot APIs
     @PATCH("/medizine/v1/slot/book")
-    Single<Response<Appointment>> book(@Body Slot slot);
+    Single<Response<Appointment>> book(@Body SlotBookingRequest slotBookingRequest);
 
     @PUT("/medizine/v1/slot/create")
     Single<Response<Slot>> create(@Body Slot slot);
