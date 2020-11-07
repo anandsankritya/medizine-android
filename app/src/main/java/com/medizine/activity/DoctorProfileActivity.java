@@ -5,17 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.medizine.Constants;
 import com.medizine.R;
+import com.medizine.ThrottleClick;
+import com.medizine.adapter.SlotListAdapter;
 import com.medizine.db.StorageService;
+import com.medizine.exceptions.NetworkUnavailableException;
 import com.medizine.model.entity.Doctor;
+import com.medizine.network.NetworkService;
+import com.medizine.network.RetryOperator;
+import com.medizine.network.RxNetwork;
 import com.medizine.utils.Utils;
+import com.medizine.widgets.SectionWidget;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.medizine.Constants.REQUEST_EDIT_DOCTOR_PROFILE;
 
@@ -32,9 +48,21 @@ public class DoctorProfileActivity extends BaseActivity {
     TextView phone;
     @BindView(R.id.email)
     TextView email;
+    @BindView(R.id.tvBook)
+    TextView tvBook;
+    @BindView(R.id.sectionSlots)
+    SectionWidget sectionSlots;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
-    public static void launchDoctorProfileActivity(Context context) {
+    private String mExternalDoctorId;
+    private SlotListAdapter mSlotListAdapter;
+
+    public static void launchDoctorProfileActivity(Context context, String externalDoctorId) {
         Intent intent = new Intent(context, DoctorProfileActivity.class);
+        if (Utils.isNotEmpty(externalDoctorId)) {
+            intent.putExtra(Constants.DOCTOR_ID, externalDoctorId);
+        }
         context.startActivity(intent);
     }
 
@@ -44,16 +72,105 @@ public class DoctorProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_doctor_profile);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.profile));
+        getSupportActionBar().setTitle("");
 
+        mSlotListAdapter = new SlotListAdapter(this, true, null);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mSlotListAdapter);
+
+        if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
+            mExternalDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
+        }
         fetchDoctorData();
     }
 
     private void fetchDoctorData() {
-        renderData(StorageService.getInstance().getDoctor());
+        if (Utils.isNotEmpty(mExternalDoctorId)) {
+            fetchDoctorDataFromNetwork(mExternalDoctorId);
+            renderSlotsForDoctor(mExternalDoctorId);
+        } else {
+            renderData(StorageService.getInstance().getDoctor());
+            renderSlotsForDoctor(StorageService.getInstance().getDoctor().getId());
+        }
+    }
+
+    private void renderSlotsForDoctor(String doctorId) {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getAllSlotsByDoctorId(doctorId);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            mSlotListAdapter.setList(response.getData());
+                            sectionSlots.setVisibility(Utils.isListEmpty(response.getData()) ? View.GONE : View.VISIBLE);
+                            tvBook.setVisibility(Utils.isNullOrEmpty(mExternalDoctorId) ? View.GONE : View.VISIBLE);
+                            tvBook.setBackgroundColor(getResources().getColor(Utils.isListEmpty(response.getData()) ? R.color.grey400 : R.color.primary));
+                            tvBook.setEnabled(!Utils.isListEmpty(response.getData()));
+                            tvBook.setOnClickListener(new ThrottleClick() {
+                                @Override
+                                public void onClick() {
+                                    BookingActivity.launchBookingActivity(DoctorProfileActivity.this, mExternalDoctorId);
+                                }
+                            });
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
+    }
+
+    private void fetchDoctorDataFromNetwork(@NonNull String externalDoctorId) {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getDoctorById(externalDoctorId);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                renderData((Doctor) response.getData());
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
     public void renderData(Doctor doctor) {
+        getSupportActionBar().setTitle(doctor.getName());
+
         name.setText(doctor.getName());
         phone.setText(doctor.getCountryCode() + " " + doctor.getPhoneNumber());
         phone.setOnClickListener(v -> Utils.dialPhone(DoctorProfileActivity.this, doctor.getCountryCode() + doctor.getPhoneNumber()));
@@ -78,8 +195,26 @@ public class DoctorProfileActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(@androidx.annotation.NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        Doctor doctor = StorageService.getInstance().getDoctor();
+        boolean condition = false;
+        if (doctor != null) {
+            if (Utils.isNotEmpty(mExternalDoctorId)) {
+                condition = mExternalDoctorId.equals(doctor.getId());
+            } else {
+                condition = Utils.isNotEmpty(doctor.getId());
+            }
+        }
+        menu.findItem(R.id.menuEditProfile).setVisible(condition);
+        menu.findItem(R.id.menuAddSlot).setVisible(condition);
+        return true;
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_doctor_profile, menu);
         return true;
     }
 
@@ -89,18 +224,29 @@ public class DoctorProfileActivity extends BaseActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menuEdit:
+            case R.id.menuEditProfile:
                 Intent intent = new Intent(this, EditDoctorProfileActivity.class);
                 startActivityForResult(intent, REQUEST_EDIT_DOCTOR_PROFILE);
                 return true;
+            case R.id.menuAddSlot:
+                addNewSlot();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addNewSlot() {
+        EditSlotActivity.launchEditSlotActivityForResult(this, StorageService.getInstance().getDoctor().getId(), Constants.REQUEST_ADD_SLOT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_EDIT_DOCTOR_PROFILE) {
+            if (resultCode == RESULT_OK) {
+                fetchDoctorData();
+            }
+        } else if (requestCode == Constants.REQUEST_ADD_SLOT) {
             if (resultCode == RESULT_OK) {
                 fetchDoctorData();
             }

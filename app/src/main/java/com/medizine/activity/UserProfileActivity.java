@@ -6,16 +6,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.medizine.Constants;
 import com.medizine.R;
 import com.medizine.db.StorageService;
+import com.medizine.exceptions.NetworkUnavailableException;
 import com.medizine.model.entity.User;
+import com.medizine.network.NetworkService;
+import com.medizine.network.RetryOperator;
+import com.medizine.network.RxNetwork;
 import com.medizine.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.medizine.Constants.REQUEST_EDIT_USER_PROFILE;
 
@@ -33,8 +43,13 @@ public class UserProfileActivity extends BaseActivity {
     @BindView(R.id.email)
     TextView email;
 
-    public static void launchUserProfileActivity(Context context) {
+    private String mExternalUserId;
+
+    public static void launchUserProfileActivity(Context context, @Nullable String externalUserId) {
         Intent intent = new Intent(context, UserProfileActivity.class);
+        if (Utils.isNotEmpty(externalUserId)) {
+            intent.putExtra(Constants.USER_ID, externalUserId);
+        }
         context.startActivity(intent);
     }
 
@@ -45,12 +60,51 @@ public class UserProfileActivity extends BaseActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.profile));
-
+        if (getIntent() != null && getIntent().hasExtra(Constants.USER_ID)) {
+            mExternalUserId = getIntent().getStringExtra(Constants.USER_ID);
+        }
         fetchUserData();
     }
 
     private void fetchUserData() {
-        renderData(StorageService.getInstance().getUser());
+        if (Utils.isNotEmpty(mExternalUserId)) {
+            fetchDoctorDataFromNetwork(mExternalUserId);
+        } else {
+            renderData(StorageService.getInstance().getUser());
+        }
+    }
+
+    private void fetchDoctorDataFromNetwork(@NonNull String externalUserId) {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().getUserById(externalUserId);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                renderData((User) response.getData());
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 
     public void renderData(User user) {

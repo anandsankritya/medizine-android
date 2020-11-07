@@ -4,7 +4,9 @@ import com.medizine.Constants;
 import com.medizine.MedizineApp;
 import com.medizine.db.StorageService;
 import com.medizine.model.Response;
+import com.medizine.model.entity.Appointment;
 import com.medizine.model.entity.Doctor;
+import com.medizine.model.entity.Slot;
 import com.medizine.model.entity.User;
 
 import java.util.List;
@@ -39,6 +41,10 @@ public class NetworkService {
     }
 
     //User APIs
+    public Single<Response<User>> getUserById(String userId) {
+        return retrofitInterface.getUserById(userId);
+    }
+
     public Single<Response<User>> getUserByPhoneNumber(String phoneNumber) {
         return retrofitInterface.getUserByPhoneNumber(Constants.COUNTRY_CODE_IN, phoneNumber);
     }
@@ -52,7 +58,11 @@ public class NetworkService {
     }
 
     //Doctor APIs
-    public Single<Response<Object>> getDoctorByPhoneNumber(String phoneNumber) {
+    public Single<Response<Doctor>> getDoctorById(String doctorId) {
+        return retrofitInterface.getDoctorById(doctorId);
+    }
+
+    public Single<Response<Doctor>> getDoctorByPhoneNumber(String phoneNumber) {
         return retrofitInterface.getDoctorByPhoneNumber(Constants.COUNTRY_CODE_IN, phoneNumber);
     }
 
@@ -66,6 +76,23 @@ public class NetworkService {
 
     public Single<Response<List<Doctor>>> getAllDoctors() {
         return retrofitInterface.getAllDoctors();
+    }
+
+    //Slot APIs
+    public Single<Response<Appointment>> bookAppointment(Slot slot) {
+        return retrofitInterface.book(slot);
+    }
+
+    public Single<Response<Slot>> createSlot(Slot slot) {
+        return retrofitInterface.create(slot);
+    }
+
+    public Single<Response<List<Slot>>> getAllSlotsByDoctorId(String doctorId) {
+        return retrofitInterface.getAllSlotsByDoctorId(doctorId);
+    }
+
+    public Single<Response<List<Slot>>> getLiveSlotStatus(String date, String doctorId, String userId) {
+        return retrofitInterface.getLiveSlotStatus(date, doctorId, userId);
     }
 
 }

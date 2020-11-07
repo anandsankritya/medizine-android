@@ -1395,6 +1395,25 @@ public class Utils {
         return df.format(date);
     }
 
+    public static String getFormattedTimeFromIsoDateString(String isoDate) {
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Date date;
+        try {
+            date = sdf.parse(isoDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (date != null) {
+            return getFormattedTime(date.getTime());
+        }
+        return null;
+    }
+
     public static String generateEventStartIsoDate(@NonNull String date, @NonNull String time) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
         try {
@@ -1482,4 +1501,9 @@ public class Utils {
         return UserType.NORMAL.name().equals(getCurrentUserType());
     }
 
+    public static String getFormattedDay(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd, EEE");
+        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+        return sdf.format(date);
+    }
 }

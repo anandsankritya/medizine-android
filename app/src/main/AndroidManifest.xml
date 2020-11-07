@@ -35,7 +35,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.EditDoctorProfileActivity"></activity>
+        <activity android:name=".activity.EditSlotActivity"></activity>
+        <activity android:name=".activity.BookingActivity" />
+        <activity android:name=".activity.AppointmentListActivity" />
+        <activity android:name=".activity.AppointmentDetailActivity" />
+        <activity android:name=".activity.EditDoctorProfileActivity" />
         <activity android:name=".activity.DoctorProfileActivity" />
         <activity
             android:name=".activity.ContactUsActivity"

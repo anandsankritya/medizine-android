@@ -187,4 +187,12 @@ public class Constants {
         public static final String RATING = "app_rating";
     }
 
+    public static final String DOCTOR_ID = "doctorId";
+    public static final String DOCTOR_MOBILE_NUMBER = "doctorMobileNumber";
+
+    public static final String USER_ID = "userId";
+    public static final String USER_MOBILE_NUMBER = "userMobileNumber";
+
+    public static final int REQUEST_ADD_SLOT = 1001;
+
 }

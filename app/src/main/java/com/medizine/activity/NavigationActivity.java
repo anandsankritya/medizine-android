@@ -174,7 +174,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         onCreateDrawer();
         //Init Rv Doctor
         doctorListAdapter = new DoctorListAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(doctorListAdapter);
     }
 
@@ -190,9 +190,9 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
     @OnClick({R.id.profilePic, R.id.usernameTv})
     public void profileViewClicked() {
         if (Utils.isUserTypeNormal()) {
-            UserProfileActivity.launchUserProfileActivity(NavigationActivity.this);
+            UserProfileActivity.launchUserProfileActivity(NavigationActivity.this, null);
         } else if (Utils.isUserTypeDoctor()) {
-            DoctorProfileActivity.launchDoctorProfileActivity(NavigationActivity.this);
+            DoctorProfileActivity.launchDoctorProfileActivity(NavigationActivity.this, null);
         }
         mDrawerLayout.closeDrawers();
     }

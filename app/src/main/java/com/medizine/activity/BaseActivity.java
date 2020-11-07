@@ -1,9 +1,12 @@
 package com.medizine.activity;
 
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,11 +16,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.medizine.R;
 import com.medizine.model.Resource;
+import com.medizine.utils.Utils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     @Nullable
     protected CompositeDisposable rxBusEventDisposable;
@@ -136,8 +145,44 @@ public class BaseActivity extends AppCompatActivity {
         outState.putBoolean("progressDialogVisibile", progressDialogVisibile);
     }
 
-    public void showToast(String msg) {
+    protected void showTimePickerDialog(String timeString) {
+        Calendar myCalendar = Calendar.getInstance();
+        int hour = myCalendar.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalendar.get(Calendar.MINUTE);
+
+        if (Utils.isNotEmpty(timeString)) {
+            String time = Utils.convertTimeToAptFormat(timeString, false);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            try {
+                Date date = null;
+                if (time != null)
+                    date = sdf.parse(time.replace(".", ":"));
+                if (date != null) {
+                    myCalendar.setTime(date);
+                    hour = myCalendar.get(Calendar.HOUR);
+                    minute = myCalendar.get(Calendar.MINUTE);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, this, hour, minute, false);
+        timePickerDialog.show();
+    }
+
+    protected void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+    }
+
+    protected boolean setError(EditText editText, int stringId) {
+        editText.setError(getText(stringId));
+        editText.requestFocus();
+        return false;
+    }
 }

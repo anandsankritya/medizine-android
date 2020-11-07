@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:padding="16dp"
+    tools:context=".activity.EditSlotActivity">
+
+    <TextView
+        android:id="@+id/labelStartTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/start_time"
+        android:textColor="@color/onSurfaceTitle"
+        app:layout_constraintBottom_toBottomOf="@id/etStartTime"
+        app:layout_constraintEnd_toStartOf="@id/etStartTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etStartTime" />
+
+    <EditText
+        android:id="@+id/etStartTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
+        android:clickable="true"
+        android:focusable="false"
+        android:gravity="top|start"
+        android:hint="@string/default_time"
+        android:imeOptions="actionNext"
+        android:inputType="time"
+        android:padding="@dimen/_6sdp"
+        android:singleLine="true"
+        android:textColor="@color/onSurfaceText"
+        android:textColorHint="@color/onSurfaceHint"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelStartTime"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="11:11 AM" />
+
+    <TextView
+        android:id="@+id/labelEndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/end_time"
+        android:textColor="@color/onSurfaceTitle"
+        app:layout_constraintBottom_toBottomOf="@id/etEndTime"
+        app:layout_constraintEnd_toStartOf="@id/etEndTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etEndTime" />
+
+    <EditText
+        android:id="@+id/etEndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_background"
+        android:clickable="true"
+        android:focusable="false"
+        android:gravity="top|start"
+        android:hint="@string/default_time"
+        android:imeOptions="actionNext"
+        android:inputType="time"
+        android:padding="@dimen/_6sdp"
+        android:singleLine="true"
+        android:textColor="@color/onSurfaceText"
+        android:textColorHint="@color/onSurfaceHint"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelEndTime"
+        app:layout_constraintTop_toBottomOf="@id/etStartTime"
+        tools:text="11:11 AM" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

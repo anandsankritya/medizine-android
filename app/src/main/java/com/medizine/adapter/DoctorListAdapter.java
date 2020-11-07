@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.medizine.R;
 import com.medizine.ThrottleClick;
+import com.medizine.activity.DoctorProfileActivity;
 import com.medizine.model.entity.Doctor;
 import com.medizine.utils.Utils;
 
@@ -33,6 +34,7 @@ public class DoctorListAdapter extends CustomListAdapter<Doctor, DoctorListAdapt
     @Override
     public void onBindViewHolder(@NonNull DoctorViewHolder holder, int position) {
         Doctor doctor = mList.get(position);
+        holder.mDoctorId = doctor.getId();
         holder.tvName.setText(Utils.capitalizeWords(doctor.getName()));
         holder.tvPhone.setText(doctor.getCountryCode() + doctor.getPhoneNumber());
         holder.tvAddress.setText(doctor.getEmailAddress());
@@ -46,13 +48,15 @@ public class DoctorListAdapter extends CustomListAdapter<Doctor, DoctorListAdapt
         @BindView(R.id.tvAddress)
         TextView tvAddress;
 
+        String mDoctorId;
+
         public DoctorViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new ThrottleClick() {
                 @Override
                 public void onClick() {
-                    //openDoctorProfileActivity(mContext, mList.get(getAdapterPosition()).getId());
+                    DoctorProfileActivity.launchDoctorProfileActivity(mContext, mDoctorId);
                 }
             });
         }
