@@ -68,4 +68,10 @@ public class LoginActivity extends BaseActivity {
             finish();
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

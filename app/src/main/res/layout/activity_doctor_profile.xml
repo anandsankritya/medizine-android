@@ -165,10 +165,11 @@
         android:layout_gravity="bottom"
         android:background="@color/primary"
         android:gravity="center"
-        android:text="@string/view_slots"
-        android:textAllCaps="true"
+        android:text="@string/book_appointment"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

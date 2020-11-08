@@ -2,6 +2,8 @@ package com.medizine.network;
 
 
 import com.medizine.model.Response;
+import com.medizine.model.ZoomMeeting;
+import com.medizine.model.ZoomMeetingRequest;
 import com.medizine.model.entity.Appointment;
 import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.Slot;
@@ -65,4 +67,30 @@ public interface RetrofitInterface {
     Single<Response<List<Slot>>> getLiveSlotStatus(@Query("date") String date,
                                                    @Query("doctorId") String doctorId,
                                                    @Query("userId") String userId);
+
+    //Appointment APIs
+    @GET("/medizine/v1/appointment/getAllByDoctorId")
+    Single<Response<List<Appointment>>> getAllAppointmentsByDoctorId(@Query("doctorId") String doctorId);
+
+    @GET("/medizine/v1/appointment/getAllByUserId")
+    Single<Response<List<Appointment>>> getAllAppointmentsByUserId(@Query("userId") String userId);
+
+    @GET("/medizine/v1/appointment/getById")
+    Single<Response<Appointment>> getAppointmentById(@Query("id") String id);
+
+    //Zoom APIs
+    @POST("/medizine/v1/meet/create")
+    Single<Response<ZoomMeeting>> createZoomMeeting(@Body ZoomMeetingRequest zoomMeetingRequest);
+
+    @GET("/medizine/v1/meet/getByHostId")
+    Single<Response<ZoomMeeting>> getZoomMeetingByHostId(@Query("hostId") String hostId);
+
+    @GET("/medizine/v1/meet/getById")
+    Single<Response<ZoomMeeting>> getZoomMeetingById(@Query("id") String id);
+
+    @PATCH("/medizine/v1/meet/patchById")
+    Single<Response<ZoomMeeting>> patchZoomMeetingById(@Query("id") String id, @Body ZoomMeetingRequest zoomMeetingRequest);
+
+    @GET("/medizine/v1/meet/getByAppointmentId")
+    Single<Response<ZoomMeeting>> getZoomMeetingByAppointmentId(@Query("appointmentId") String appointmentId);
 }

@@ -61,8 +61,11 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
         ButterKnife.bind(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.available_slots);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.available_slots));
+        }
         if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
             mDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
         }
@@ -191,5 +194,11 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
                             }
                         }
                 );
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

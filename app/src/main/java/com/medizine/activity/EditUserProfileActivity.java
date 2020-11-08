@@ -396,6 +396,13 @@ public class EditUserProfileActivity extends BaseActivity implements DatePickerD
         String currentDateString = format.format(c.getTimeInMillis());
         dob.setText(currentDateString);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }
 
 

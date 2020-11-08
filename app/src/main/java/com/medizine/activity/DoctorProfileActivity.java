@@ -71,8 +71,11 @@ public class DoctorProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_profile);
         ButterKnife.bind(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
 
         mSlotListAdapter = new SlotListAdapter(this, true, null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -152,7 +155,7 @@ public class DoctorProfileActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                             if (response.getData() != null) {
-                                renderData((Doctor) response.getData());
+                                renderData(response.getData());
                             }
                             hideProgressBar();
                             setProgressDialogMessage(getString(R.string.saving));
@@ -251,5 +254,11 @@ public class DoctorProfileActivity extends BaseActivity {
                 fetchDoctorData();
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

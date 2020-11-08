@@ -138,7 +138,8 @@ public class EditDoctorProfileActivity extends BaseActivity implements DatePicke
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.edit_profile);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.edit_profile));
         }
 
         mDoctor = StorageService.getInstance().getDoctor();
@@ -395,6 +396,12 @@ public class EditDoctorProfileActivity extends BaseActivity implements DatePicke
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         String currentDateString = format.format(c.getTimeInMillis());
         dob.setText(currentDateString);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 

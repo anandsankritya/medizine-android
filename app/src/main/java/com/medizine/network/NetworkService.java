@@ -4,6 +4,8 @@ import com.medizine.Constants;
 import com.medizine.MedizineApp;
 import com.medizine.db.StorageService;
 import com.medizine.model.Response;
+import com.medizine.model.ZoomMeeting;
+import com.medizine.model.ZoomMeetingRequest;
 import com.medizine.model.entity.Appointment;
 import com.medizine.model.entity.Doctor;
 import com.medizine.model.entity.Slot;
@@ -96,4 +98,41 @@ public class NetworkService {
         return retrofitInterface.getLiveSlotStatus(date, doctorId, userId);
     }
 
+    //Appointment APIs
+    public Single<Response<List<Appointment>>> getAllAppointmentsByDoctorId(String doctorId) {
+        return retrofitInterface.getAllAppointmentsByDoctorId(doctorId);
+    }
+
+    public Single<Response<List<Appointment>>> getAllAppointmentsByUserId(String userId) {
+        return retrofitInterface.getAllAppointmentsByUserId(userId);
+    }
+
+    public Single<Response<Appointment>> getAppointmentById(String id) {
+        return retrofitInterface.getAppointmentById(id);
+    }
+
+    //Zoom APIs
+    public Single<Response<ZoomMeeting>> createZoomMeeting(ZoomMeetingRequest zoomMeetingRequest) {
+        return retrofitInterface.createZoomMeeting(zoomMeetingRequest);
+    }
+
+    public Single<Response<ZoomMeeting>> getZoomMeetingByHostId(String hostId) {
+        return retrofitInterface.getZoomMeetingByHostId(hostId);
+    }
+
+    public Single<Response<ZoomMeeting>> getZoomMeetingById(String id) {
+        return retrofitInterface.getZoomMeetingById(id);
+    }
+
+    public Single<Response<ZoomMeeting>> patchZoomMeetingById(String id, ZoomMeetingRequest zoomMeetingRequest) {
+        return retrofitInterface.patchZoomMeetingById(id, zoomMeetingRequest);
+    }
+
+    public Single<Response<ZoomMeeting>> getZoomMeetingByAppointmentId(String appointmentId) {
+        return retrofitInterface.getZoomMeetingByAppointmentId(appointmentId);
+    }
+
+    public Single<Response<ZoomMeeting>> createZoomMeetingIfNotExists(ZoomMeetingRequest zoomMeetingRequest) {
+        return retrofitInterface.createZoomMeeting(zoomMeetingRequest);
+    }
 }

@@ -45,4 +45,10 @@ public class UserTypeSelectionActivity extends BaseActivity {
             finish();
         });
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

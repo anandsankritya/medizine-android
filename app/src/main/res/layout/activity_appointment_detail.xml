@@ -1,15 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.medizine.widgets.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     tools:context=".activity.AppointmentDetailActivity">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="AppointmentDetailActivity"
-        android:textSize="24sp" />
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/layoutAppointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_notice_item"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvAppointmentDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                tools:text="Appointment Date : Mon, 06/06/2020, 11:55 AM" />
+
+            <TextView
+                android:id="@+id/tvAppointmentStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textAllCaps="true"
+                android:textColor="@color/onSurfaceSubtitle"
+                android:textStyle="italic"
+                tools:text="INACTIVE" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_rectangle_background"
+            android:padding="6dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/layoutAppointment">
+
+            <TextView
+                android:id="@+id/tvTiming"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hkgrotesk_semibold"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/btnBookSlot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Starts At : 11:00 AM, Ends At : 12:00 PM" />
+
+            <Button
+                android:id="@+id/btnBookSlot"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:background="@color/transparent"
+                android:text="@string/book"
+                android:textColor="@color/primary"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTiming" />
+
+            <ImageView
+                android:id="@+id/ivBooked"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/ic_checkmark"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTiming" />
+
+            <TextView
+                android:id="@+id/tvBookedByCurrentUser"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:drawableRight="@drawable/ic_baseline_favorite_24"
+                android:gravity="center"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/booked_by_you"
+                android:textColor="@color/onSurfaceSubtitle"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTiming" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/doctorUI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_notice_item"
+            android:padding="10dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutSlot">
+
+            <ImageView
+                android:id="@+id/ivThumbnail"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/profile_pic_white_border_circle"
+                app:layout_constraintBottom_toTopOf="@id/tvAddress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/hkgrotesk_semibold"
+                android:lines="1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tvPhone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivThumbnail"
+                app:layout_constraintTop_toTopOf="@id/ivThumbnail"
+                tools:text="Doctor Name" />
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:lines="1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/ivThumbnail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivThumbnail"
+                app:layout_constraintTop_toBottomOf="@id/tvName"
+                tools:text="+917979800075" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivThumbnail"
+                tools:text="101-B, Narayanshree Apt, DPS More, Behind Bailey Greens Apt, Kaliket Nagar - 801503 " />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/userUI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_notice_item"
+            android:padding="10dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutSlot">
+
+            <ImageView
+                android:id="@+id/ivUserThumbnail"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/profile_pic_white_border_circle"
+                app:layout_constraintBottom_toTopOf="@id/tvUserAddress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/hkgrotesk_semibold"
+                android:lines="1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tvUserPhone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivUserThumbnail"
+                app:layout_constraintTop_toTopOf="@id/ivUserThumbnail"
+                tools:text="User Name" />
+
+            <TextView
+                android:id="@+id/tvUserPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:lines="1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/ivUserThumbnail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivUserThumbnail"
+                app:layout_constraintTop_toBottomOf="@id/tvUserName"
+                tools:text="+917979800075" />
+
+            <TextView
+                android:id="@+id/tvUserAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textColor="@color/onSurfaceTitle"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivUserThumbnail"
+                tools:text="101-B, Narayanshree Apt, DPS More, Behind Bailey Greens Apt, Kaliket Nagar - 801503 " />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnJoin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@color/primary"
+            android:gravity="center"
+            android:text="@string/join"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMeetingStatusInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle_background"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/meeting_status_info"
+            android:textColor="@color/onSurfaceTitle"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@color/primary"
+            android:gravity="center"
+            android:text="@string/start"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.medizine.widgets.StateLayout>

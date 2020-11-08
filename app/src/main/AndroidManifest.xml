@@ -35,12 +35,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.EditSlotActivity"></activity>
-        <activity android:name=".activity.BookingActivity" />
-        <activity android:name=".activity.AppointmentListActivity" />
-        <activity android:name=".activity.AppointmentDetailActivity" />
-        <activity android:name=".activity.EditDoctorProfileActivity" />
-        <activity android:name=".activity.DoctorProfileActivity" />
+
+        <activity
+            android:name=".activity.ZoomLoginActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.StartLiveStreamActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.ZoomMeetingActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.EditSlotActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BookingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AppointmentListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AppointmentDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditDoctorProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DoctorProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ContactUsActivity"
             android:parentActivityName=".activity.HomeActivity"

@@ -55,8 +55,11 @@ public class EditSlotActivity extends BaseActivity {
         setContentView(R.layout.activity_edit_slot);
         ButterKnife.bind(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.add_slot);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.add_slot));
+        }
 
         if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
             mDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
@@ -179,4 +182,11 @@ public class EditSlotActivity extends BaseActivity {
             etEndTime.setText(convertedTime);
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

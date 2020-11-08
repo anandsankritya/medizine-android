@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.medizine.utils.Utils;
+
 @Entity
 public class Appointment {
     @PrimaryKey
@@ -65,6 +67,13 @@ public class Appointment {
 
     public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public String getFormattedAppointmentDate() {
+        if (Utils.isNullOrEmpty(appointmentDate)) {
+            return null;
+        }
+        return Utils.getFormattedAppointmentDate(appointmentDate);
     }
 }
 

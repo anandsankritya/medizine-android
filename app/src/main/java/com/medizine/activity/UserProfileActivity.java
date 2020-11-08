@@ -91,7 +91,7 @@ public class UserProfileActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                             if (response.getData() != null) {
-                                renderData((User) response.getData());
+                                renderData(response.getData());
                             }
                             hideProgressBar();
                             setProgressDialogMessage(getString(R.string.saving));
@@ -160,4 +160,11 @@ public class UserProfileActivity extends BaseActivity {
             }
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

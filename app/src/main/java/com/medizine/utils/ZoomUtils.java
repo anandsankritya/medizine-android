@@ -1,5 +1,7 @@
 package com.medizine.utils;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -9,14 +11,18 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.medizine.Constants;
+import com.medizine.R;
+import com.medizine.activity.ZoomMeetingActivity;
 import com.medizine.event.Event;
 import com.medizine.model.ZoomMeeting;
 
 import java.lang.reflect.Type;
 
-public class ZoomUtils {
-    private static final String ZOOM_MEETING_BASE_URL = "zoom.us/j/";
+import us.zoom.sdk.CustomizedNotificationData;
+import us.zoom.sdk.InMeetingNotificationHandle;
+import us.zoom.sdk.ZoomSDK;
 
+public class ZoomUtils {
     private static final Gson gson = new Gson();
     private static final Type zoomMeetingType = new TypeToken<ZoomMeeting>() {
     }.getType();
@@ -40,7 +46,12 @@ public class ZoomUtils {
             Log.d("isHost", "zoomMeeting == null");
             return false;
         }
-        return Utils.getUserID().equals(zoomMeeting.getHostUserId());
+        if (Utils.isUserTypeNormal()) {
+            return Utils.getUserID().equals(zoomMeeting.getHostId());
+        } else if (Utils.isUserTypeDoctor()) {
+            return Utils.getDoctorID().equals(zoomMeeting.getHostId());
+        }
+        return false;
     }
 
     public static void sendEventByDeepLink(@Nullable String deeplink) {
@@ -103,7 +114,7 @@ public class ZoomUtils {
         return Uri.parse(zoomMeetingUrl).getQueryParameter("pwd");
     }
 
-    /*
+
     public static void customizeForegroundNotification(ZoomSDK zoomSDK, int contentTextId) {
         CustomizedNotificationData customizedNotificationData = new CustomizedNotificationData();
         customizedNotificationData.setContentTitleId(R.string.app_name);
@@ -124,13 +135,11 @@ public class ZoomUtils {
         };
 
         if (zoomSDK.getMeetingSettingsHelper() != null) {
-            zoomSDK.getMeetingSettingsHelper().disableShowMeetingNotification(true);
+            //zoomSDK.getMeetingSettingsHelper().disableShowMeetingNotification(true);
             zoomSDK.getMeetingSettingsHelper().setAutoConnectVoIPWhenJoinMeeting(true);
             zoomSDK.getMeetingSettingsHelper().disableAutoShowSelectJoinAudioDlgWhenJoinMeeting(true);
             zoomSDK.getMeetingSettingsHelper().setCustomizedNotificationData(customizedNotificationData, inMeetingNotificationHandle);
         }
 
     }
-     */
-
 }

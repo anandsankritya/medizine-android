@@ -1254,8 +1254,16 @@ public class Utils {
         return StorageService.getInstance().getUser().getName();
     }
 
+    public static String getDoctorName() {
+        return StorageService.getInstance().getDoctor().getName();
+    }
+
     public static String getUserID() {
         return StorageService.getInstance().getUser().getId();
+    }
+
+    public static String getDoctorID() {
+        return StorageService.getInstance().getDoctor().getId();
     }
 
 //    public static String getTimePastString(Context context, long pastTime) {
@@ -1396,11 +1404,7 @@ public class Utils {
     }
 
     public static String getFormattedTimeFromIsoDateString(String isoDate) {
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        SimpleDateFormat sdf = getGlobalSdf();
         Date date;
         try {
             date = sdf.parse(isoDate);
@@ -1410,6 +1414,29 @@ public class Utils {
         }
         if (date != null) {
             return getFormattedTime(date.getTime());
+        }
+        return null;
+    }
+
+    public static SimpleDateFormat getGlobalSdf() {
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
+        }
+        return new SimpleDateFormat(pattern);
+    }
+
+    public static String getFormattedAppointmentDate(String isoDate) {
+        SimpleDateFormat sdf = getGlobalSdf();
+        Date date;
+        try {
+            date = sdf.parse(isoDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (date != null) {
+            return new SimpleDateFormat("dd/MM/yyyy, hh:mm aa, EEE").format(date);
         }
         return null;
     }
@@ -1504,5 +1531,15 @@ public class Utils {
     public static String getFormattedDay(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd, EEE");
         return sdf.format(date);
+    }
+
+    public static String getHostUserName() {
+        if (Utils.isUserTypeNormal()) {
+            return getUserName();
+        } else if (isUserTypeDoctor()) {
+            return getDoctorName();
+        } else {
+            return "Medizine";
+        }
     }
 }

@@ -134,6 +134,7 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
     private void setupDrawer() {
         // Decide which items to show
         mMenuItems = new ArrayList<>();
+        mMenuItems.add(DrawerMenuItem.APPOINTMENTS);
         mMenuItems.add(DrawerMenuItem.CONTACT_US);
         mMenuItems.add(DrawerMenuItem.SHARE_APP);
         mMenuItems.add(DrawerMenuItem.LOG_OUT);
@@ -218,10 +219,19 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
         mDrawerToggle.setDrawerIndicatorEnabled(enabled);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (mMenuItems.get(position)) {
+                case APPOINTMENTS:
+                    AppointmentListActivity.launchAppointmentListActivity(NavigationActivity.this);
+                    break;
                 case CONTACT_US:
                     ContactUsActivity.launchContactUsActivity(NavigationActivity.this);
                     break;
@@ -234,4 +244,5 @@ public class NavigationActivity extends BaseActivity implements DrawerLocker {
             mDrawerLayout.closeDrawers();
         }
     }
+
 }

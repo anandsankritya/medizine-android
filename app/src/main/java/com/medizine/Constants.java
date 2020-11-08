@@ -141,11 +141,12 @@ public class Constants {
     public static final String ZOOM_MEETING_ENDED = "zoomMeetingEnded";
     public static final String ZOOM_LIVE_STREAMING_TAG = "zoomLiveStreamingTag";
     public static final String WEB_DOMAIN = "zoom.us";
-    public static final String SDK_KEY = "";
-    public static final String SDK_SECRET = "";
+    public static final String SDK_KEY = "Fyvg0j38YVTCbfTqjx9eA4Qdjnjql0Xwi6Qa";
+    public static final String SDK_SECRET = "bsgcCIY1FfE9loOuCvGLWWdmtT9anrf8KHtL";
     public static final String TELEGRAM_LINK_PREFIX = "https://t.me/";
     public static final String WHATS_APP_LINK_PREFIX = "https://wa.me/";
     public static final String COUNTRY_CODE_IN = "+91";
+    public static final String APPOINTMENT_ID = "appointmentId";
     public static String PATH = MedizineApp.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getPath() + "/";
     public static String LOG_FILE_NAME = "logfile.txt";
     public static int SENSOR_SENSITIVITY = 20;
