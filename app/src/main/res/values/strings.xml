@@ -135,7 +135,7 @@
     <string name="default_time">00:00</string>
     <string name="end_time">End Time</string>
     <string name="invalid_slot_time_range">Time range for slot must lies between 15 to 30 minutes.</string>
-    <string name="slot_timing">Starts At : %1$s, Ends At : %2$s</string>
+    <string name="slot_timing">Starts At : %1$s \nEnds At : %2$s</string>
     <string name="available_slots">Available Slots</string>
     <string name="booking_in_progress">Booking in progress…</string>
     <string name="appointments">Appointments</string>

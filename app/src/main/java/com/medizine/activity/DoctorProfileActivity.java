@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.medizine.Constants.REQUEST_EDIT_DOCTOR_PROFILE;
 
-public class DoctorProfileActivity extends BaseActivity {
+public class DoctorProfileActivity extends BaseActivity implements SlotListAdapter.OnSlotRemoved {
     private static final String TAG = DoctorProfileActivity.class.getSimpleName();
 
     @BindView(R.id.name)
@@ -76,11 +76,6 @@ public class DoctorProfileActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("");
         }
-
-        mSlotListAdapter = new SlotListAdapter(this, true, null);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(mSlotListAdapter);
-
         if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
             mExternalDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
         }
@@ -95,6 +90,10 @@ public class DoctorProfileActivity extends BaseActivity {
             renderData(StorageService.getInstance().getDoctor());
             renderSlotsForDoctor(StorageService.getInstance().getDoctor().getId());
         }
+        boolean showRemoveSlotIcon = Utils.isUserTypeDoctor() && Utils.getDoctorID().equals(StorageService.getInstance().getDoctor().getId());
+        mSlotListAdapter = new SlotListAdapter(this, true, null, this::onSlotRemoved, showRemoveSlotIcon);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mSlotListAdapter);
     }
 
     private void renderSlotsForDoctor(String doctorId) {
@@ -260,5 +259,39 @@ public class DoctorProfileActivity extends BaseActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onSlotRemoved(Context context, String slotId) {
+        setProgressDialogMessage(getString(R.string.loading));
+        showProgressBar();
+
+        Disposable disposable = RxNetwork.observeNetworkConnectivity(this)
+                .flatMapSingle(connectivity -> {
+                    if (connectivity.isAvailable()) {
+                        return NetworkService.getInstance().deleteSlotById(slotId);
+                    } else {
+                        throw new NetworkUnavailableException();
+                    }
+                })
+                .compose(RetryOperator::jainamRetryWhen)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                            if (response.getData() != null) {
+                                mSlotListAdapter.setList(response.getData());
+                            }
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                        }, throwable -> {
+                            hideProgressBar();
+                            setProgressDialogMessage(getString(R.string.saving));
+                            if (throwable instanceof NetworkUnavailableException) {
+                                Toast.makeText(this, getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Utils.logException(TAG, throwable);
+                            }
+                        }
+                );
     }
 }

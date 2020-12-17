@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -67,6 +68,9 @@ public interface RetrofitInterface {
     Single<Response<List<Slot>>> getLiveSlotStatus(@Query("date") String date,
                                                    @Query("doctorId") String doctorId,
                                                    @Query("userId") String userId);
+
+    @DELETE("/medizine/v1/slot/deleteById")
+    Single<Response<List<Slot>>> deleteSlotById(@Query("id") String slotId);
 
     //Appointment APIs
     @GET("/medizine/v1/appointment/getAllByDoctorId")

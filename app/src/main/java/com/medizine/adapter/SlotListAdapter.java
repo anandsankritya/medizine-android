@@ -5,15 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.medizine.R;
 import com.medizine.model.entity.Slot;
+import com.medizine.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,13 +24,17 @@ import butterknife.ButterKnife;
 public class SlotListAdapter extends CustomListAdapter<Slot, SlotListAdapter.SlotViewHolder> {
     private static final String TAG = SlotListAdapter.class.getSimpleName();
 
-    private boolean mShowDoctorLayout;
+    private boolean mShowDoctorLayout, mShowRemoveButton;
     private OnSlotBookedListener mOnSlotBookedListener;
+    @Nullable
+    private OnSlotRemoved mOnSlotRemoved;
 
-    public SlotListAdapter(Context context, boolean showDoctorLayout, OnSlotBookedListener onSlotBookedListener) {
+    public SlotListAdapter(Context context, boolean showDoctorLayout, OnSlotBookedListener onSlotBookedListener, @Nullable OnSlotRemoved onSlotRemoved, boolean showRemoveButton) {
         super(context);
         this.mShowDoctorLayout = showDoctorLayout;
         this.mOnSlotBookedListener = onSlotBookedListener;
+        this.mOnSlotRemoved = onSlotRemoved;
+        this.mShowRemoveButton = showRemoveButton;
     }
 
     @NonNull
@@ -47,11 +54,17 @@ public class SlotListAdapter extends CustomListAdapter<Slot, SlotListAdapter.Slo
         void onSlotBooked(Context context, Slot slot);
     }
 
+    public interface OnSlotRemoved {
+        void onSlotRemoved(Context context, String slotId);
+    }
+
     public class SlotViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.layoutSlot)
         ConstraintLayout layoutSlot;
         @BindView(R.id.tvTiming)
         TextView tvTiming;
+        @BindView(R.id.ibRemove)
+        ImageButton ibRemove;
         @BindView(R.id.btnBookSlot)
         Button btnBookSlot;
         @BindView(R.id.ivBooked)
@@ -68,6 +81,16 @@ public class SlotListAdapter extends CustomListAdapter<Slot, SlotListAdapter.Slo
         }
 
         public void bind(Slot slot) {
+            if (mShowRemoveButton) {
+                ibRemove.setVisibility(View.VISIBLE);
+                ibRemove.setOnClickListener(view -> {
+                    if (mOnSlotRemoved != null) {
+                        mOnSlotRemoved.onSlotRemoved(mContext, slot.getId());
+                    }
+                });
+            } else {
+                ibRemove.setVisibility(View.GONE);
+            }
             tvTiming.setText(mContext.getString(R.string.slot_timing, slot.getFormattedStartTime(), slot.getFormattedEndTime()));
             btnBookSlot.setOnClickListener(view -> {
                 if (mOnSlotBookedListener != null) {

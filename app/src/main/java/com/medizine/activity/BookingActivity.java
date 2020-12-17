@@ -49,6 +49,7 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
     @Nullable
     private String mDoctorId;
     private SlotListAdapter mSlotListAdapter;
+    private Date selectedDate = null;
 
     public static void launchBookingActivity(@NonNull Context context, @NonNull String doctorId) {
         Intent intent = new Intent(context, BookingActivity.class);
@@ -69,7 +70,7 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
             mDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
         }
-        mSlotListAdapter = new SlotListAdapter(this, false, this);
+        mSlotListAdapter = new SlotListAdapter(this, false, this, null, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mSlotListAdapter);
         btnDayOne.setOnClickListener(new ThrottleClick() {
@@ -110,12 +111,15 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         if (selectedDay == 0) {
             renderSlotsForDoctor(mDoctorId, dates.get(0));
             updateSelectedButtonBackground(R.id.btnDayOne);
+            selectedDate = dates.get(0);
         } else if (selectedDay == 1) {
             renderSlotsForDoctor(mDoctorId, dates.get(1));
             updateSelectedButtonBackground(R.id.btnDayTwo);
+            selectedDate = dates.get(1);
         } else if (selectedDay == 2) {
             renderSlotsForDoctor(mDoctorId, dates.get(2));
             updateSelectedButtonBackground(R.id.btnDayThree);
+            selectedDate = dates.get(2);
         }
     }
 
@@ -162,8 +166,13 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         setProgressDialogMessage(getString(R.string.booking_in_progress));
         showProgressBar();
 
+        if (selectedDate == null) {
+            showToast(getString(R.string.oops_something_went_wrong));
+            return;
+        }
+
         SlotBookingRequest slotBookingRequest = new SlotBookingRequest();
-        slotBookingRequest.setBookingDate(Utils.toISO8601UTC(new Date()));
+        slotBookingRequest.setBookingDate(Utils.toISO8601UTC(selectedDate));
         slotBookingRequest.setDoctorId(slot.getDoctorId());
         slotBookingRequest.setSlotId(slot.getId());
         slotBookingRequest.setUserId(Utils.getUserID());
