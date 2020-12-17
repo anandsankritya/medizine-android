@@ -98,6 +98,10 @@ public class NetworkService {
         return retrofitInterface.getLiveSlotStatus(date, doctorId, userId);
     }
 
+    public Single<Response<List<Slot>>> deleteSlotById(String slotId) {
+        return retrofitInterface.deleteSlotById(slotId);
+    }
+
     //Appointment APIs
     public Single<Response<List<Appointment>>> getAllAppointmentsByDoctorId(String doctorId) {
         return retrofitInterface.getAllAppointmentsByDoctorId(doctorId);

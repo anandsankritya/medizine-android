@@ -20,8 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hkgrotesk_semibold"
-            android:gravity="center"
-            android:lines="1"
+            android:gravity="start"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:textColor="@color/onSurfaceTitle"
@@ -29,7 +28,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Starts At : 11:00 AM, Ends At : 12:00 PM" />
+            tools:text="Starts At : 11:00 AM \nEnds At : 12:00 PM" />
+
+        <ImageButton
+            android:id="@+id/ibRemove"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/zm_mm_delete_btn"
+            android:background="@color/transparent"
+            app:layout_constraintTop_toTopOf="@id/tvTiming"
+            app:layout_constraintEnd_toEndOf="@id/tvTiming"
+            app:layout_constraintBottom_toBottomOf="@id/tvTiming"/>
 
         <Button
             android:id="@+id/btnBookSlot"

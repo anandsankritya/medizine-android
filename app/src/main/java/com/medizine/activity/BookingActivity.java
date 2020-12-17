@@ -70,7 +70,7 @@ public class BookingActivity extends BaseActivity implements SlotListAdapter.OnS
         if (getIntent() != null && getIntent().hasExtra(Constants.DOCTOR_ID)) {
             mDoctorId = getIntent().getStringExtra(Constants.DOCTOR_ID);
         }
-        mSlotListAdapter = new SlotListAdapter(this, false, this);
+        mSlotListAdapter = new SlotListAdapter(this, false, this, null, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mSlotListAdapter);
         btnDayOne.setOnClickListener(new ThrottleClick() {
